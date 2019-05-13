@@ -84,6 +84,12 @@ class ItemList():
         self.processor = listify(self.processor)
         for p in self.processor: p.process(self)
         return self
+        """
+        How does `ItemList.process` or `y.process(yp)` work?
+        `self` is an object of `ItemList` or its subclasses
+        `processor` is one or more `PreProcessors` objects
+        Behind the scenes, we put all of `processor` into a list and apply them all to the `self`.
+        """
 
     def process_one(self, item:ItemBase, processor:PreProcessors=None):
         "Apply `processor` or `self.processor` to `item`."
@@ -347,6 +353,14 @@ class CategoryProcessor(PreProcessor):
         ds.classes = self.classes
         ds.c2i = self.c2i
         super().process(ds)
+        """
+        How does `CategoryProcessor.process` work?
+        `self` is an object of `CategoryProcessor`
+        `ds` is an object of `CategoryList`
+        `classes` is a list of unique labels
+        `c2i` is a dictionary from `classes` to `indexes`
+        it basically generates values for `ds.classes` and `ds.c2i` which previously are `None` and non-exist respectively.
+        """
 
     def __getstate__(self): return {n:getattr(self,n) for n in self.state_attrs}
     def __setstate__(self, state:dict):
