@@ -48,8 +48,15 @@ def get_files(path:PathOrStr, extensions:Collection[str]=None, recurse:bool=Fals
 class PreProcessor():
     "Basic class for a processor that will be applied to items at the end of the data block API."
     def __init__(self, ds:Collection=None):  self.ref_ds = ds
-    def process_one(self, item:Any):         return item
-    def process(self, ds:Collection):        ds.items = array([self.process_one(item) for item in ds.items])
+    def process_one(self, item:Any):    return item    
+
+    def process(self, ds:Collection):       
+        """
+        ds: an object of ItemList
+        using `process_one` to process each item of `ds.items` and put them into an array,
+        and then assign back to `ds.items`.
+        """
+        ds.items = array([self.process_one(item) for item in ds.items])
 
 PreProcessors = Union[PreProcessor, Collection[PreProcessor]]
 fastai_types[PreProcessors] = 'PreProcessors'
@@ -351,6 +358,11 @@ class CategoryProcessor(PreProcessor):
         return uniqueify(items, sort=True)
 
     def process_one(self,item):
+        """
+        item: any element of items
+        c2i: a dictionary from classes to indexes
+        it basically uses `item` as key of `c2i` to return `index` as the value 
+        """
         if isinstance(item, EmptyLabel): return item
         res = self.c2i.get(item,None)
         if res is None: self.warns.append(str(item))
