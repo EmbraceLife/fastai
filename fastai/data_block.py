@@ -337,6 +337,14 @@ class CategoryProcessor(PreProcessor):
     def create_classes(self, classes):
         self.classes = classes
         if classes is not None: self.c2i = {v:k for k,v in enumerate(classes)}
+        
+        """
+        How does `CategoryProcessor.create_classes` work?
+        `classes`: a list of unique and sorted labels
+        `self`: an object of `CateogryProcessor`
+        `c2i`: a dictionary whose keys are `classes` and values are indexes starting to increase from 0
+        It assigns `classes` to `self.classes` and creates `self.c2i` with `classes` as keys.
+        """
 
     def generate_classes(self, items):
         "Generate classes from `items` by taking the sorted unique values."
