@@ -215,7 +215,17 @@ class Image(ItemBase):
 
     def show(self, ax:plt.Axes=None, figsize:tuple=(3,3), title:Optional[str]=None, hide_axis:bool=True,
               cmap:str=None, y:Any=None, **kwargs):
-        "Show image on `ax` with `title`, using `cmap` if single-channel, overlaid with optional `y`"
+        """
+        Show image on `ax` with `title`, using `cmap` if single-channel, overlaid with optional `y`
+        `show` handles plotting for both  x and y with title.
+        `show_image` does heavy lifting on ax, axis, cmap, figsize.
+        ax: matplotlib.pyplot axes on which show the image
+        figsize: Size of the figure
+        title: Title to display on top of the graph
+        hide_axis: If True, the axis of the graph are hidden
+        cmap: Color map used only when a single channel image
+        y: Potential target to be superposed on the same graph (mask, bounding box, points)
+        """
         cmap = ifnone(cmap, defaults.cmap)
         ax = show_image(self, ax=ax, hide_axis=hide_axis, cmap=cmap, figsize=figsize)
         if y is not None: y.show(ax=ax, **kwargs)

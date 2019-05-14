@@ -256,6 +256,14 @@ class ImageList(ItemList):
     "`ItemList` suitable for computer vision."
     _bunch,_square_show,_square_show_res = ImageDataBunch,True,True
     def __init__(self, *args, convert_mode='RGB', after_open:Callable=None, **kwargs):
+        """
+        `ImageList` inherit from `ItemList`
+        uses additional properties  `convert_mode`, `after_open`, and `kwargs` than `ItemList`
+        internally it uses `image_extension` to focus on image files by  
+        `ImageList` takes in `convert_mode`, 'RGB' default, 'L' makes image tensor to have 1 channel rather than 3
+        *arg: no-name argument values in a list or tuple, position determines who they are
+        **kwargs: named argument values in dict, position matters not.
+        """
         super().__init__(*args, **kwargs)
         self.convert_mode,self.after_open = convert_mode,after_open
         self.copy_new.append('convert_mode')
@@ -273,7 +281,13 @@ class ImageList(ItemList):
     
     @classmethod
     def from_folder(cls, path:PathOrStr='.', extensions:Collection[str]=None, **kwargs)->ItemList:
-        "Get the list of files in `path` that have an image suffix. `recurse` determines if we search subfolders."
+        """
+        Get the list of files in `path` that have an image suffix. `recurse` determines if we search subfolders.
+        It inherits and overwrites on `ItemList.from_folder`.
+        It gets a list of image files with different suffix into an `ImageList` object.
+        It searches image files in subfolders if `recursive=True`.
+        `extensions=['.csv']` to get only csv files, `extensions=['.png', '.jpg']` to get only images with these two suffix.
+        """
         extensions = ifnone(extensions, image_extensions)
         return super().from_folder(path=path, extensions=extensions, **kwargs)
 
