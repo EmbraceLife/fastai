@@ -397,7 +397,26 @@ class ImageBBox(ImagePoints):
 
 def open_image(fn:PathOrStr, div:bool=True, convert_mode:str='RGB', cls:type=Image,
         after_open:Callable=None)->Image:
-    "Return `Image` object created from image in file `fn`."
+    """
+    Return `Image` object created from image in file `fn`."
+    
+    ----why
+    `open_image`:
+        1. just return an `Image` object from an image file
+        2. print out image only automatically happens in jn.
+
+    ----inputs
+    `convert_mode`: 
+        1. 'RGB' default,
+        2. 'L' makes image tensor to have 1 channel rather than 3
+        3. when called from `ImageList.open`, 
+           it is passing down from `ImageList.convert_mode`.
+    
+    `after_open`: 
+        1. passing down from `ImageList.after_open` 
+           when called from `ImageList.open`.
+    
+    """
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", UserWarning) # EXIF warning from TiffPlugin
         x = PIL.Image.open(fn).convert(convert_mode)

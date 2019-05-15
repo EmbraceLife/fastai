@@ -54,7 +54,9 @@ def get_files(path:PathOrStr, extensions:Collection[str]=None, recurse:bool=Fals
     """
     Return list of files in `path` that have a suffix in `extensions`; optionally `recurse`.
     ----why
-    `get_files`: return a list of files extracted from a folder path
+    `get_files`: 
+        1. return a list of files extracted from a folder path
+        2. usually used by `from_folder` etc, not directly used.
 
     ----inputs
     `cls`: @classmethod uses cls instead of self
@@ -76,7 +78,6 @@ def get_files(path:PathOrStr, extensions:Collection[str]=None, recurse:bool=Fals
     1. choose to extract from subfolders = `recursive=True`
     2. choose to only use a group of subfolders = `include=[some subfolders names]`
     3. hidden folders and files are not extracted
-    4. 
     """
     # if recurse == True
     if recurse:
@@ -207,7 +208,7 @@ class ItemList():
         `recurse`: whether to extract subfolders
         `include`: a list of folders to extract files from
         `processor`: a list of processors 
-        `presort`: whether to pre-sort files??
+        `presort`: whether to pre-sort files, e.g. MNIST_TINY
         `**kwargs`: a dict of additional args with values,
                     passing onto next level functions  
        

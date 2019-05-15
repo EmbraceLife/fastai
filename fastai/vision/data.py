@@ -257,10 +257,30 @@ class ImageList(ItemList):
     _bunch,_square_show,_square_show_res = ImageDataBunch,True,True
     def __init__(self, *args, convert_mode='RGB', after_open:Callable=None, **kwargs):
         """
-        `ImageList` inherit from `ItemList`
-        uses additional properties  `convert_mode`, `after_open`, and `kwargs` than `ItemList`
-        internally it uses `image_extension` to focus on image files by  
-        `ImageList` takes in `convert_mode`, 'RGB' default, 'L' makes image tensor to have 1 channel rather than 3
+        `ImageList.__init__`: 
+            1. inherit from `ItemList`
+            2. create a list of image files (not any files)
+            3. basically add additional properties for handling images
+
+        ----inputs:
+        unique from `ItemList`:
+        1. `convert_mode`: image only
+        2. `after_open`: to process on image
+        3. `kwargs`: a dict of named args with values
+        4. `c`: number of classes
+        5. `sizes`: of each image??
+        
+        other inputs:
+        1. inherit from `ItemList`
+        2. inputs like `convert_mode` for `ImageList.open` and others.
+
+        ----internally
+        `convert_mode` and `after_open`: 
+            1. passing in from `from_folder`, passing onto `ImageList.open`
+            2. eventually onto `open_image`
+        `c` and `sizes`:
+            1. used for others.           
+        
         *arg: no-name argument values in a list or tuple, position determines who they are
         **kwargs: named argument values in dict, position matters not.
         """
@@ -289,10 +309,10 @@ class ImageList(ItemList):
     @classmethod
     def from_folder(cls, path:PathOrStr='.', extensions:Collection[str]=None, **kwargs)->ItemList:
         """Get the list of files in `path` that have an image suffix. `recurse` determines if we search subfolders.
-        ----
+        ----why
         `ImageList.from_folder` = extract a list of image files from a folder.
         
-        ----
+        ----inputs
         Args below mainly from `ItemList.from_folder`:
 
         `cls`: classmethod use `cls` instead of `self`, here is `ImageList`
@@ -300,7 +320,7 @@ class ImageList(ItemList):
         `extentions`: a list of file suffix
         `**kwargs`: a dict of named args with values
 
-        ----
+        ----internals
         `super().from_folder`: `ItemList.from_folder`.
         `image_extensions`: is a default list of extensions for images.
         `convert_mode=L`: part of `kwargs` passing onto `ImageList.__init__`, which convert a 3 channels image into a 1 channle image. 
