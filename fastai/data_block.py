@@ -20,25 +20,82 @@ def _path_to_same_str(p_fn):
     return s_fn
 
 def _get_files(parent, p, f, extensions):
+    """
+    `_get_files`: 
+        1. extract a list of files from `f` the list
+        2. files must have suffix in the extensions.
+        3. return a list of Path objects
+
+    ----inputs 
+    `parent`: path_data
+    `p`: subfolder path
+    `f`: a list of files from `p`
+    `extensions`: a list of suffix
+
+    ----cases
+    1. hidden files are ignored
+    2. all suffix can be lower or upper cases
+
+    """
+    # create a Path object for p 
     p = Path(p)#.relative_to(parent)
+    # if only one suffix, then put it into a list
     if isinstance(extensions,str): extensions = [extensions]
+    # make sure all suffix are in lower case
     low_extensions = [e.lower() for e in extensions] if extensions is not None else None
+    # make sure the files are not hidden and suffix are in extensions
     res = [p/o for o in f if not o.startswith('.')
            and (extensions is None or f'.{o.split(".")[-1].lower()}' in low_extensions)]
+    # res is a list of Path objects
     return res
 
 def get_files(path:PathOrStr, extensions:Collection[str]=None, recurse:bool=False,
               include:Optional[Collection[str]]=None, presort:bool=False)->FilePathList:
-    "Return list of files in `path` that have a suffix in `extensions`; optionally `recurse`."
+    """
+    Return list of files in `path` that have a suffix in `extensions`; optionally `recurse`.
+    ----why
+    `get_files`: return a list of files extracted from a folder path
+
+    ----inputs
+    `cls`: @classmethod uses cls instead of self
+    `path`: folder path
+    `extensions`: a list of file suffix
+    `recurse`: whether to extract subfolders
+    `include`: a list of folders to extract files from
+    `processor`: a list of processors 
+    `presort`: whether to pre-sort files??
+    `**kwargs`: a dict of additional args with values,
+                passing onto next level functions 
+
+    ----internals
+    `_get_files`: 
+        1. extract files from the list `f` from the path `path/p`
+        2. all the files are with suffix in `extensions`
+
+    ----cases
+    1. choose to extract from subfolders = `recursive=True`
+    2. choose to only use a group of subfolders = `include=[some subfolders names]`
+    3. hidden folders and files are not extracted
+    4. 
+    """
+    # if recurse == True
     if recurse:
         res = []
         for i,(p,d,f) in enumerate(os.walk(path)):
             # skip hidden dirs
+            # if `include` has a list of folders, d will only contain `include`
             if include is not None and i==0:  d[:] = [o for o in d if o in include]
+            # otherwise, d will just exclude hidden folders and files
             else:                             d[:] = [o for o in d if not o.startswith('.')]
+            # get a list of files with suffix out of `extensions`, 
+            # and these files are from `f` (the list of files)
+            # add such a list into `res`
             res += _get_files(path, p, f, extensions)
+
+        # if `presort==True`, then sort files from image number from small to large. 
         if presort: res = sorted(res, key=lambda p: _path_to_same_str(p), reverse=False)
         return res
+    # otherwise => recursive==False, only extract files in the immediate folder
     else:
         f = [o.name for o in os.scandir(path) if o.is_file()]
         res = _get_files(path, path, f, extensions)
@@ -136,7 +193,28 @@ class ItemList():
     def from_folder(cls, path:PathOrStr, extensions:Collection[str]=None, recurse:bool=True,
                     include:Optional[Collection[str]]=None, processor:PreProcessors=None, presort:Optional[bool]=False, **kwargs)->'ItemList':
         """Create an `ItemList` in `path` from the filenames that have a suffix in `extensions`.
-        `recurse` determines if we search subfolders."""
+        `recurse` determines if we search subfolders.
+
+        ----why
+        `ItemList.from_folder`:
+        1. extract a list of files from a folder, and 
+        2. pass onto `ItemList.__init__` to instantiate an object
+        
+        ----inputs
+        `cls`: @classmethod uses cls instead of self
+        `path`: folder path
+        `extensions`: a list of file suffix
+        `recurse`: whether to extract subfolders
+        `include`: a list of folders to extract files from
+        `processor`: a list of processors 
+        `presort`: whether to pre-sort files??
+        `**kwargs`: a dict of additional args with values,
+                    passing onto next level functions  
+       
+        ----internals
+        `get_files`: extract files of folders into a list
+        `cls`: `ItemList.__init__`
+        """
         path = Path(path)
         return cls(get_files(path, extensions, recurse=recurse, include=include, presort=presort), path=path, processor=processor, **kwargs)
 

@@ -290,14 +290,20 @@ class ImageList(ItemList):
     def from_folder(cls, path:PathOrStr='.', extensions:Collection[str]=None, **kwargs)->ItemList:
         """Get the list of files in `path` that have an image suffix. `recurse` determines if we search subfolders.
         ----
-        `ImageList.from_folder` = create a list of images with different image suffix from a folder.
-        It inherits and overwrites on `ItemList.from_folder`.
-        It considers `path` and `extensions` to be most used input args from `ItemList.from_folder`.
-        Internally, `image_extensions` is default extensions, and then `ItemList.from_folder` is called.
-        It searches image files in subfolders if `recursive=True`.
-        `extensions=['.csv']` to get only csv files, `extensions=['.png', '.jpg']` to get only images with these two suffix.
-        It can add `convert_mode=L` into `kwargs` for `ImageList.__init__`, which convert a 3 channels image into a 1 channle image. 
-        It can use `include=['train', 'test']` to only take files from these two folders.
+        `ImageList.from_folder` = extract a list of image files from a folder.
+        
+        ----
+        Args below mainly from `ItemList.from_folder`:
+
+        `cls`: classmethod use `cls` instead of `self`, here is `ImageList`
+        `path`: folder path
+        `extentions`: a list of file suffix
+        `**kwargs`: a dict of named args with values
+
+        ----
+        `super().from_folder`: `ItemList.from_folder`.
+        `image_extensions`: is a default list of extensions for images.
+        `convert_mode=L`: part of `kwargs` passing onto `ImageList.__init__`, which convert a 3 channels image into a 1 channle image. 
         """
         extensions = ifnone(extensions, image_extensions)
         return super().from_folder(path=path, extensions=extensions, **kwargs)

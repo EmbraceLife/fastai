@@ -206,15 +206,16 @@ def datapath4file(filename, ext:str='.tgz', archive=True):
 def download_data(url:str, fname:PathOrStr=None, data:bool=True, ext:str='.tgz') -> Path:
     """
     "Download `url` to destination `fname`."
-    ----
+    
+    ----inputs
     `url`: to download from this `url` address. 
     `fname`: save the downloaded tgz file in the path of `fname`
     `data`: whether this file is data or model
     `ext`: suffix of file
-    ----
+
+    ----internals
     `download_url(f'{url}{ext}', fname)`: actual downloading func
     `_url2tgz(url, data, ext=ext)`: from url to file path string
-    ----
 
     """
     # turn a `url` into tgz filename  with `_url2tgz(url, data, ext=ext)`    
@@ -238,16 +239,19 @@ def _check_file(fname):
 def untar_data(url:str, fname:PathOrStr=None, dest:PathOrStr=None, data=True, force_download=False) -> Path:
     """
     Download `url` to `fname` if `dest` doesn't exist, and un-tgz to folder `dest`.
-    ---- 
+    
+    ----why 
     In general, untar_data uses a url to download a tgz file under fname,
     and then un-tgz fname into a folder under dest.
 
+    ----inputs
     `url`: URLs.something
     `fname`: path or string of path for storing the tgz file
     `dest`: path or string of path for storing untared data
     `data`: is the file dataset or model
     `force_download`: force to redownload or not
 
+    ----internals
     url2path(url, data) 
     url2name(url)
     _url2tgz(url, data)
@@ -258,6 +262,7 @@ def untar_data(url:str, fname:PathOrStr=None, dest:PathOrStr=None, data=True, fo
     shutil.rmtree(dest)
     tarfile.open(fname, 'r:gz').extractall(dest.parent)
 
+    ----use cases
     If you have run untar_data before,
     then running untar_data(URLs.something) again 
     will just return you dest without downloading again.
