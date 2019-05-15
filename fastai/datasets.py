@@ -222,13 +222,26 @@ def untar_data(url:str, fname:PathOrStr=None, dest:PathOrStr=None, data=True, fo
     """
     Download `url` to `fname` if `dest` doesn't exist, and un-tgz to folder `dest`.
    
-    In general, untar_data uses a url to download a tgz file under fname, and then un-tgz fname into a folder under dest.
+    In general, untar_data uses a url to download a tgz file under fname,
+    and then un-tgz fname into a folder under dest.
 
-    If you have run untar_data before, then running untar_data(URLs.something) again will just return you dest without downloading again.
+    If you have run untar_data before,
+    then running untar_data(URLs.something) again 
+    will just return you dest without downloading again.
 
-    If you have run untar_data before, then running untar_data again with force_download=True or the tgz file under fname being corrupted somehow, will remove the existing fname and dest and start downloading again.
+    If you have run untar_data before, 
+    then running untar_data again with `force_download=True`
+    or the tgz file under fname being corrupted somehow,
+    will remove the existing fname and dest and start downloading again.
 
-    If you have run untar_data before, but dest does not exist, meaning no folder under dest exist (the folder could be removed or renamed somehow), then running untar_data(URLs.something) again will execute download_data. Furthermore, if the tgz file under fname does exist, then there will be no actual downloading rather than un-tgz fname into dest; if fname does not exist, then downloading for the tgz file will be actually executed.
+    If you have run untar_data before, but dest does not exist, 
+    meaning no folder under dest exist 
+    (the folder could be removed or renamed somehow), 
+    then running untar_data(URLs.something) again will execute download_data.
+    Furthermore, if the tgz file under fname does exist, 
+    then there will be no actual downloading rather than un-tgz fname into dest;
+    if fname does not exist, 
+    then downloading for the tgz file will be actually executed.
 
     Note: the url you feed to untar_data must be one of URLs.something.
     """

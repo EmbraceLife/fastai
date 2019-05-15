@@ -270,7 +270,14 @@ class ImageList(ItemList):
         self.c,self.sizes = 3,{}
 
     def open(self, fn):
+        """
         "Open image in `fn`, subclass and overwrite for custom behavior."
+        ----
+        `ImageList.open` takes a filename `fn` and print out an image.
+        It is intended to be subclassed and overwritten.
+        It basically calls `open_image` which controls `convert_mode`, `after_open`. 
+
+        """
         return open_image(fn, convert_mode=self.convert_mode, after_open=self.after_open)
 
     def get(self, i):
@@ -281,12 +288,16 @@ class ImageList(ItemList):
     
     @classmethod
     def from_folder(cls, path:PathOrStr='.', extensions:Collection[str]=None, **kwargs)->ItemList:
-        """
-        Get the list of files in `path` that have an image suffix. `recurse` determines if we search subfolders.
+        """Get the list of files in `path` that have an image suffix. `recurse` determines if we search subfolders.
+        ----
+        `ImageList.from_folder` = create a list of images with different image suffix from a folder.
         It inherits and overwrites on `ItemList.from_folder`.
-        It gets a list of image files with different suffix into an `ImageList` object.
+        It considers `path` and `extensions` to be most used input args from `ItemList.from_folder`.
+        Internally, `image_extensions` is default extensions, and then `ItemList.from_folder` is called.
         It searches image files in subfolders if `recursive=True`.
         `extensions=['.csv']` to get only csv files, `extensions=['.png', '.jpg']` to get only images with these two suffix.
+        It can add `convert_mode=L` into `kwargs` for `ImageList.__init__`, which convert a 3 channels image into a 1 channle image. 
+        It can use `include=['train', 'test']` to only take files from these two folders.
         """
         extensions = ifnone(extensions, image_extensions)
         return super().from_folder(path=path, extensions=extensions, **kwargs)
