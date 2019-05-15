@@ -204,15 +204,32 @@ def datapath4file(filename, ext:str='.tgz', archive=True):
     else: return Config.data_path() / filename
 
 def download_data(url:str, fname:PathOrStr=None, data:bool=True, ext:str='.tgz') -> Path:
+    """
     "Download `url` to destination `fname`."
+    ----
+    `url`: to download from this `url` address. 
+    `fname`: save the downloaded tgz file in the path of `fname`
+    `data`: whether this file is data or model
+    `ext`: suffix of file
+    ----
+    `download_url(f'{url}{ext}', fname)`: actual downloading func
+    `_url2tgz(url, data, ext=ext)`: from url to file path string
+    ----
+
+    """
+    # turn a `url` into tgz filename  with `_url2tgz(url, data, ext=ext)`    
     fname = Path(ifnone(fname, _url2tgz(url, data, ext=ext)))
+    # create a folder to be `fname.parent`
     os.makedirs(fname.parent, exist_ok=True)
+    # if `fname` does not have a file on this path 
     if not fname.exists():
         print(f'Downloading {url}')
+        # download with the f'{url}{ext}' and assign to `fname` 
         download_url(f'{url}{ext}', fname)
     return fname
 
 def _check_file(fname):
+    "return fname(a path object)'s size and hash number"
     size = os.path.getsize(fname)
     with open(fname, "rb") as f:
         hash_nb = hashlib.md5(f.read(2**20)).hexdigest()
@@ -221,9 +238,25 @@ def _check_file(fname):
 def untar_data(url:str, fname:PathOrStr=None, dest:PathOrStr=None, data=True, force_download=False) -> Path:
     """
     Download `url` to `fname` if `dest` doesn't exist, and un-tgz to folder `dest`.
-   
+    ---- 
     In general, untar_data uses a url to download a tgz file under fname,
     and then un-tgz fname into a folder under dest.
+
+    `url`: URLs.something
+    `fname`: path or string of path for storing the tgz file
+    `dest`: path or string of path for storing untared data
+    `data`: is the file dataset or model
+    `force_download`: force to redownload or not
+
+    url2path(url, data) 
+    url2name(url)
+    _url2tgz(url, data)
+    fname.exists(): whether a real file exists under this path.
+    _check_file(fname)
+    download_data(url, fname=fname, data=data)
+    os.remove(fname)
+    shutil.rmtree(dest)
+    tarfile.open(fname, 'r:gz').extractall(dest.parent)
 
     If you have run untar_data before,
     then running untar_data(URLs.something) again 
@@ -245,16 +278,27 @@ def untar_data(url:str, fname:PathOrStr=None, dest:PathOrStr=None, data=True, fo
 
     Note: the url you feed to untar_data must be one of URLs.something.
     """
-    
+    # if `dest` is None (not given), turns url into a path as `dest`
+    # if `dest` is not None, combine `dest` and `url` into a path as `dest`
     dest = url2path(url, data) if dest is None else Path(dest)/url2name(url)
+    # if `fname` is None, turn `url` into a path and assign to `fname`
     fname = Path(ifnone(fname, _url2tgz(url, data)))
+    # if `force_download=True` 
+    # or `fname` exists but url-hash and local-fname-hash don't match 
     if force_download or (fname.exists() and url in _checks and _check_file(fname) != _checks[url]):
         print(f"A new version of the {'dataset' if data else 'model'} is available.")
+        # if `fname` file exists, remove it 
         if fname.exists(): os.remove(fname)
+        # if `dest` folder exists, remove all of its content
         if dest.exists(): shutil.rmtree(dest)
+    # if `dest` folder exists not
     if not dest.exists():
+        # `download_data` will download and return tgz file and assign to `fname`
         fname = download_data(url, fname=fname, data=data)
+        # make sure the `fname` downloaded has the same hash
         if url in _checks:
             assert _check_file(fname) == _checks[url], f"Downloaded file {fname} does not match checksum expected! Remove that file from {Config().data_archive_path()} and try your code again."
+        # untar the tgz file    
         tarfile.open(fname, 'r:gz').extractall(dest.parent)
+    # return a path of `dest`
     return dest
