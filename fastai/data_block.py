@@ -701,6 +701,19 @@ class ItemLists():
         return f'{self.__class__.__name__};\n\nTrain: {self.train};\n\nValid: {self.valid};\n\nTest: {self.test}'
 
     def __getattr__(self, k):
+        """
+        `ItemLists.__getattr__`:
+            1. apply `ItemList.k` to `self.train` and `self.valid`
+            2. turn `ItemLists` to `LabelLists`
+            3. call `LabelLists.process`
+
+        ----inputs
+        `k`: string, a method name of `ItemList`
+
+        ----internals
+        `LabelLists.process`: to process both labellists inside
+
+        """
         ft = getattr(self.train, k)
         if not isinstance(ft, Callable): return ft
         fv = getattr(self.valid, k)
