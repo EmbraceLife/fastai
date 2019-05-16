@@ -327,9 +327,20 @@ class ItemList():
         return self.split_none()
 
     def split_none(self):
+        """
         "Don't split the data and create an empty validation set."
+        
+        ----why:
+        `ItemList.split_none`:
+            1. don't split `self`, just create an empty `ItemList` for validation set 
+            2. create and return an `ItemLists` object with 
+               with `self` and empty validation `ItemList`.
+        """
+        # create an empty itemlist
         val = self[[]]
+        # make sure `ignore_empty=True`
         val.ignore_empty = True
+        # create an itemlists with `self` and `val`
         return self._split(self.path, self, val)
 
     def split_by_list(self, train, valid):
@@ -346,6 +357,13 @@ class ItemList():
             1. instead of taking in two lists above,
             2. it takes two `self[train_idx]` and `self[valid_idx]`
             3. these are two new `ItemList`s on training and validation sets
+        
+        ----internals
+        `ItemLists.__init__`:
+            1. it takes 3 inputs
+            2. `path`: path_data
+            3. `train`: new `ItemList` for training set
+            4. `valid`: new `ItemList` for validation set
         """
         return self._split(self.path, train, valid)
 
