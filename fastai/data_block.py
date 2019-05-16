@@ -480,7 +480,30 @@ class ItemList():
         return ItemList #self.__class__
 
     def _label_from_list(self, labels:Iterator, label_cls:Callable=None, from_item_lists:bool=False, **kwargs)->'LabelList':
+        """
         "Label `self.items` with `labels`."
+
+        ----what and how
+        `ItemList._label_from_list`:
+            1. make sure `from_item_lists` set `True`, 
+               otherwise exception message
+            2. turn `labels` into an array of `labels`
+            3. get `label_cls` out of `labels`
+            4. instantiate `label_cls` with `labels`, `path`, `kwargs` to `y`
+            5. create a `LabelList` object with `self` and `y`
+            6. return this labellists 
+        
+        ----internals
+        `ItemList.get_label_cls`: get `label_cls` from `labels`
+        `label_cls(labels, path=self.path, **kwargs)`: instantiate a label cls
+        `self._label_list(x=self, y=y)`: instantiate a `LabelList`
+
+        ----Note
+        `from_item_lists`:
+            1. set `True` and 
+            2. introduced since and by `ItemLists.__getattr__`
+            3. passing down here through `kwargs`
+        """
         if not from_item_lists:
             raise Exception("Your data isn't split, if you don't want a validation set, please use `split_none`.")
         labels = array(labels, dtype=object)
