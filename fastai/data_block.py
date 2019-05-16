@@ -508,7 +508,16 @@ class ItemList():
         return self.label_from_func(func=lambda o: 0., **kwargs)
 
     def label_from_func(self, func:Callable, label_cls:Callable=None, **kwargs)->'LabelList':
+        """
         "Apply `func` to every input to get its label."
+        
+        `ItemList.label_from_func`: 
+            1. apply `func` to every item of `self.items`
+            2. put all the output of func into a list
+            3. pass the list and `label_cls` and `**kwargs` to 
+            4. `ItemList._label_from_list` to create labels
+            
+        """
         return self._label_from_list([func(o) for o in self.items], label_cls=label_cls, **kwargs)
 
     def label_from_folder(self, label_cls:Callable=None, **kwargs)->'LabelList':
