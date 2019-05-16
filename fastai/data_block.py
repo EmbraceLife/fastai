@@ -344,7 +344,22 @@ class ItemList():
                 else self.items[i].split(os.path.sep)[0]) == name ]
 
     def split_by_folder(self, train:str='train', valid:str='valid')->'ItemLists':
+        """
         "Split the data depending on the folder (`train` or `valid`) in which the filenames are."
+        ----why:
+        `ItemList.split_by_folder`:
+            1. split a large ItemList into a training ItemList 
+               and a validation ItemList;
+            2. create an `ItemLists` and  attach both `ItemList` into it.
+
+        ----inputs:
+        `train`: the foldername for training set of files
+        `valid`: the foldername for validation set of files
+        
+        ----internals
+        `split_by_idxs`: does same job above using two group of idxs
+        `_get_by_folder`: get all the idxs of files of a particular folder
+        """
         return self.split_by_idxs(self._get_by_folder(train), self._get_by_folder(valid))
 
     def random_split_by_pct(self, valid_pct:float=0.2, seed:int=None):
