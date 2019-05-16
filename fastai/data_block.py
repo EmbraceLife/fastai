@@ -125,13 +125,37 @@ class ItemList():
 
     def __init__(self, items:Iterator, path:PathOrStr='.', label_cls:Callable=None, inner_df:Any=None,
                  processor:PreProcessors=None, x:'ItemList'=None, ignore_empty:bool=False):
+        """
+        ----why
+        `ItemList.__init__`
+            1. prepare the properties for a list of items for calling methods
+
+        ----inputs and internals
+            1. `_` and `__` prefix are internals
+            2. path properties: `path`, `num_parts`
+            3. data prperties: `items`, `x`, `ignore_empty`, `inner_df`
+            4. label properties: `label_cls`, `_label_list`
+            5. processor properties: `processor`
+            6. split properties: `_split`
+            7. new-ItemList properites: `copy_new`
+            8. calling `__post_init__`
+        """
+        # add `path` as a property
         self.path = Path(path)
+        # add `num_parts` of the path as a property
         self.num_parts = len(self.path.parts)
+        # add `items`, `x`, `ignore_empty` as properties to handle data
         self.items,self.x,self.ignore_empty = items,x,ignore_empty
+        # make sure `items` to be an array
         if not isinstance(self.items,np.ndarray): self.items = array(self.items, dtype=object)
+        # add `inner_df`, `processors` and `label_cls` as properties
         self.label_cls,self.inner_df,self.processor = ifnone(label_cls,self._label_cls),inner_df,processor
+        # add `LabelList`, `ItemLists` to  internal properties
+        # `_label_list`, `_split` respectively
         self._label_list,self._split = LabelList,ItemLists
+        # set property `copy_new` for creating new `Itemlist`
         self.copy_new = ['x', 'label_cls', 'path']
+        # calling internal function `__post__init()`
         self.__post_init__()
 
     def __post_init__(self): pass
@@ -186,6 +210,11 @@ class ItemList():
         return self
 
     def __getitem__(self,idxs:int)->Any:
+        """
+        `ItemList.__getitem__`:
+            1. when `idxs` is a single number, return `self.get(idxs)`
+            2. when a range of numbers, return a new `ItemList` of those items
+        """
         idxs = try_int(idxs)
         if isinstance(idxs, Integral): return self.get(idxs)
         else: return self.new(self.items[idxs], inner_df=index_row(self.inner_df, idxs))

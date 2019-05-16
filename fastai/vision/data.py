@@ -258,9 +258,9 @@ class ImageList(ItemList):
     def __init__(self, *args, convert_mode='RGB', after_open:Callable=None, **kwargs):
         """
         `ImageList.__init__`: 
-            1. inherit from `ItemList`
-            2. create a list of image files (not any files)
-            3. basically add additional properties for handling images
+            1. inherit all properties and methods from `ItemList`
+            2. add additional properties for handling images
+            3. becomes an `ItemList` for dealing specifically image files
 
         ----inputs:
         unique from `ItemList`:
@@ -270,16 +270,16 @@ class ImageList(ItemList):
         4. `c`: number of classes
         5. `sizes`: of each image??
         
-        other inputs:
-        1. inherit from `ItemList`
-        2. inputs like `convert_mode` for `ImageList.open` and others.
+        other available inputs:
+        1. input/args inherit from `ItemList`
+        2. inputs/args like `convert_mode` for `ImageList.open` and others.
 
-        ----internally
+        ----cases:
         `convert_mode` and `after_open`: 
             1. passing in from `from_folder`, passing onto `ImageList.open`
             2. eventually onto `open_image`
         `c` and `sizes`:
-            1. used for others.           
+            1. used for other methods.           
         
         *arg: no-name argument values in a list or tuple, position determines who they are
         **kwargs: named argument values in dict, position matters not.
@@ -301,6 +301,12 @@ class ImageList(ItemList):
         return open_image(fn, convert_mode=self.convert_mode, after_open=self.after_open)
 
     def get(self, i):
+        """
+        `ImageList.get`:
+            1. inherits from `ItemList.get` to get a file path
+            2. return an image object from the file with `ImageList.open`
+            3. save this `Image` object size into `self.sizes[i]`
+        """
         fn = super().get(i)
         res = self.open(fn)
         self.sizes[i] = res.size
