@@ -84,11 +84,28 @@ class Image(ItemBase):
     @property
     def device(self)->torch.device: return self._px.device
 
-    def __repr__(self): return f'{self.__class__.__name__} {tuple(self.shape)}'
-    def _repr_png_(self): return self._repr_image_format('png')
+    def __repr__(self):
+        """
+        `Image.__repr__`: 
+            1. what look like to print out an `Image` object
+            2. print out class name and object shape
+        """
+        return f'{self.__class__.__name__} {tuple(self.shape)}'
+    def _repr_png_(self):
+        """
+        `Image._repr_png_`:
+            1. to print out the `Image` object as a real image
+            2. this is special effect working together with ipython
+        """
+        return self._repr_image_format('png')
     def _repr_jpeg_(self): return self._repr_image_format('jpeg')
 
     def _repr_image_format(self, format_str):
+        """
+        `Image._repr_image_format`:
+            1. make sure image files with different suffix 
+               printing out ok.
+        """
         with BytesIO() as str_buffer:
             plt.imsave(str_buffer, image2np(self.px), format=format_str)
             return str_buffer.getvalue()
