@@ -159,7 +159,14 @@ class ItemList():
         self.__post_init__()
 
     def __post_init__(self): pass
-    def __len__(self)->int: return len(self.items) or 1
+    def __len__(self)->int: 
+        """
+        `ItemList.__len__`:
+            1. equivalent to `len(ItemList)`
+            2. return `len(ItemList.items)` or 1
+        """
+        return len(self.items) or 1
+
     def get(self, i)->Any:
         """
         "Subclass if you want to customize how to create item `i` from `self.items`."
@@ -340,6 +347,17 @@ class ItemList():
         return self.split_by_idxs(train_idx, valid_idx)
 
     def _get_by_folder(self, name):
+        """
+        `ItemList._get_by_folder`:
+            1. files of all folders are in the same list of `self.items`;
+            2. index all the files with `for i in range_of(self)`
+            3. choose a subfolder `name`
+            4. select all files with the `name` on into a list
+            5. return the list
+
+        ----internals:
+        `range_of`: create a range from 0 to len(x) 
+        """
         return [i for i in range_of(self) if (self.items[i].parts[self.num_parts] if isinstance(self.items[i], Path)
                 else self.items[i].split(os.path.sep)[0]) == name ]
 
