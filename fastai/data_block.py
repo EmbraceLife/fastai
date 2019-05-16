@@ -161,9 +161,26 @@ class ItemList():
     def __post_init__(self): pass
     def __len__(self)->int: return len(self.items) or 1
     def get(self, i)->Any:
+        """
         "Subclass if you want to customize how to create item `i` from `self.items`."
+        ----why
+        `ItemList.get`:
+            1. to get individual item from `self.items`
+            2. different subclasses should/may have to 
+               have different version of it
+        """
         return self.items[i]
     def __repr__(self)->str:
+        """
+        `ItemList.__repr__`:
+            1. how `ItemList` object should be printed out
+            2. print out more than 5 items
+            3. each item is accessed by `self[i]` or `self.__getitem__(i)`
+            4. also print out info on class, length, and those items above
+
+        ----internals
+        `show_some`: print out items 
+        """
         items = [self[i] for i in range(min(5,len(self.items)))]
         return f'{self.__class__.__name__} ({len(self.items)} items)\n{show_some(items)}\nPath: {self.path}'
 
