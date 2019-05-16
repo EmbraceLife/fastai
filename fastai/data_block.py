@@ -469,7 +469,19 @@ class ItemList():
         return self.split_by_idx(valid_idx)
 
     def get_label_cls(self, labels, label_cls:Callable=None, label_delim:str=None, **kwargs):
+        """
         "Return `label_cls` or guess one from the first element of `labels`."
+        
+        `ItemList.get_label_cls`: 
+            1. get `label_cls` from `labels`
+            2. like a look-up or match-up function
+            3. if `label_cls` or `self.label_cls` is available, return `label_cls`
+            4. if `label_delim` is available, return `MultiCategoryList`
+            5. if first item of `labels` is float, return `FloatList`
+            6. if first item of `labels` is int, return `CategoryList`
+            7. if first item of `labels` is collection, return `MultiCategoryList`
+            8. otherwise, return `ItemList`
+        """
         if label_cls is not None:               return label_cls
         if self.label_cls is not None:          return self.label_cls
         if label_delim is not None:             return MultiCategoryList
