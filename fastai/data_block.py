@@ -714,16 +714,28 @@ class ItemLists():
         `LabelLists.process`: to process both labellists inside
 
         """
+        # use built-in `getattr` to get method `ItemList.k` 
+        # on `self.train` into an object `ft`
         ft = getattr(self.train, k)
         if not isinstance(ft, Callable): return ft
+        # assign method `self.valid.k` to `fv`
         fv = getattr(self.valid, k)
+        # make sure `ft`, `fv` are callable methods
         assert isinstance(fv, Callable)
+        # `args` returns position arguments of current frame/method        
         def _inner(*args, **kwargs):
+            # run `self.train.label_from_folder` and  
+            # passing `from_item_lists=True` onto its own internal func
             self.train = ft(*args, from_item_lists=True, **kwargs)
+            # make sure self.train is a LabelList now
             assert isinstance(self.train, LabelList)
+            # add {'label_cls`:self.train.y.__class__} to kwargs
             kwargs['label_cls'] = self.train.y.__class__
+            # run `self.valid.label_from_folder` like above
             self.valid = fv(*args, from_item_lists=True, **kwargs)
+            # turn self from itemlists into labellists
             self.__class__ = LabelLists
+            # let's this labellists processes itself
             self.process()
             return self
         return _inner
