@@ -658,6 +658,16 @@ class CategoryList(CategoryListBase):
     "Basic `ItemList` for single classification labels."
     _processor=CategoryProcessor
     def __init__(self, items:Iterator, classes:Collection=None, label_delim:str=None, **kwargs):
+        """
+        `CategoryList.__init__`:
+            1. create a categorylist for labels
+
+        ----internals
+            1. non-default args: `items`/`labels`
+            2. default args: `classes` and `label_delim`
+            2. instantiate `CategoryListBase`
+            3. add `CrossEntropyFlat()` as its `loss_func`
+        """
         super().__init__(items, classes=classes, **kwargs)
         self.loss_func = CrossEntropyFlat()
 
