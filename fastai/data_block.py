@@ -512,7 +512,15 @@ class ItemList():
         return self._label_from_list([func(o) for o in self.items], label_cls=label_cls, **kwargs)
 
     def label_from_folder(self, label_cls:Callable=None, **kwargs)->'LabelList':
+        """
         "Give a label to each filename depending on its folder."
+        ----why
+        `ItemList.label_from_folder`:
+            1. build a lambda func to extract subfoldername from a file
+            2. run `ItemList.label_from_func` with inputs like `func`,
+               `label_cls` and `**kwargs`
+            3. to create labels to dataset
+        """
         return self.label_from_func(func=lambda o: (o.parts if isinstance(o, Path) else o.split(os.path.sep))[-2],
                                     label_cls=label_cls, **kwargs)
 
