@@ -646,6 +646,20 @@ class CategoryProcessor(PreProcessor):
 class CategoryListBase(ItemList):
     "Basic `ItemList` for classification."
     def __init__(self, items:Iterator, classes:Collection=None, **kwargs):
+        """
+        ----what
+        `CategoryListBase.__init__`:
+            1. create a categorylistbase for labels
+            2. add unique properties beyond `ItemList`: 
+               `classes`, `filter_missing_y`
+            2. it is to be subclasses for different kinds of labels situations
+
+        ----internals
+            1. assign default arg `classes` to property `classes`
+            2. set property `filter_missing_y` `True`
+            3. inherit from an ItemList 
+            4. add `classes` to `copy_new`
+        """
         self.classes=classes
         self.filter_missing_y = True
         super().__init__(items, **kwargs)
@@ -667,6 +681,11 @@ class CategoryList(CategoryListBase):
             2. default args: `classes` and `label_delim`
             2. instantiate `CategoryListBase`
             3. add `CrossEntropyFlat()` as its `loss_func`
+
+        ----Note
+            1. when passing `path=self.path` onto `CategoryList.__init__`
+            2. it has to enter into `kwargs`, as arbitrary args
+            3. as `path=self.path` is not positional, not default args
         """
         super().__init__(items, classes=classes, **kwargs)
         self.loss_func = CrossEntropyFlat()
