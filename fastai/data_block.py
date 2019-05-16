@@ -333,11 +333,37 @@ class ItemList():
         return self._split(self.path, self, val)
 
     def split_by_list(self, train, valid):
+        """
         "Split the data between `train` and `valid`."
+
+         `ItemList.split_by_list`:
+            1. it actually uses `_split` to provide `ItemLists`
+            2. to instantiate an `ItemLists` object with two `ItemList` attached
+            3. this `ItemLists` is what `ItemList.split_by_folder`,
+               and `split_by_idxs` return.
+               
+        ----inputs: 
+            1. instead of taking in two lists above,
+            2. it takes two `self[train_idx]` and `self[valid_idx]`
+            3. these are two new `ItemList`s on training and validation sets
+        """
         return self._split(self.path, train, valid)
 
     def split_by_idxs(self, train_idx, valid_idx):
+        """
         "Split the data between `train_idx` and `valid_idx`."
+        
+        `ItemList.split_by_idxs`:
+            1. `train_idx`: a list of indxs for training set
+            2. `valid_idx`: a list of indxs for validation set
+            3. does the same job as `ItemList.split_by_folder`
+
+        ----internals
+        `ItemList.split_by_list`: 
+            1. instead of taking in two lists above,
+            2. it takes two `self[train_idx]` and `self[valid_idx]`
+            3. these are two new `ItemList`s on training and validation sets
+        """
         return self.split_by_list(self[train_idx], self[valid_idx])
 
     def split_by_idx(self, valid_idx:Collection[int])->'ItemLists':
