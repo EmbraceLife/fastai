@@ -862,7 +862,22 @@ class ItemLists():
 class LabelLists(ItemLists):
     "A `LabelList` for each of `train` and `valid` (optional `test`)."
     def get_processors(self):
+        """
         "Read the default class processors if none have been set."
+
+        ----what
+        `LabelLists.get_processors`: 
+            1. instantiate `x` and `y`'s processors for training set
+            2. return the processors objects as `xp`, `yp`
+
+        ----internals
+        `self.train.x._processor`: class property for ItemList 
+        `self.train.y._processor`: class property for CategorProcessor, e.g.
+        `p(ds=self.train.y)`: instantiate e.g. CategoryProcessor
+            1. put all class processors into a list, procs_x, procs_y
+            2. instantiate all processors and put into a list, xp, yp
+            3. return xp, yp 
+        """
         procs_x,procs_y = listify(self.train.x._processor),listify(self.train.y._processor)
         xp = ifnone(self.train.x.processor, [p(ds=self.train.x) for p in procs_x])
         yp = ifnone(self.train.y.processor, [p(ds=self.train.y) for p in procs_y])
