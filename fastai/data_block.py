@@ -937,6 +937,21 @@ def _check_kwargs(ds:ItemList, tfms:TfmList, **kwargs):
 class LabelList(Dataset):
     "A list of inputs `x` and labels `y` with optional `tfms`."
     def __init__(self, x:ItemList, y:ItemList, tfms:TfmList=None, tfm_y:bool=False, **kwargs):
+        """
+        ----what
+        `LabelList.__init__`:
+            1. instantiate a labellist to gather 
+            2. inputs `x` and labels `y`
+            3. together with `tfms`
+            4. `LabelList` inherits from `torch.utils.data.Dataset`
+            5. source `Dataset` for details
+
+        ----internals
+            1. assign non-default args `x`, `y` to properties `x`, `y`
+            2. assign default args `tfm_y` to properties `tfm_y`
+            3. assign property `item` to None
+            4. do `self.transforms` with `tfms` (default args ) and `**kwargs` 
+        """
         self.x,self.y,self.tfm_y = x,y,tfm_y
         self.y.x = x
         self.item=None
