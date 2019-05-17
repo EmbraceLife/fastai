@@ -110,9 +110,12 @@ class PreProcessor():
 
     def process(self, ds:Collection):       
         """
-        ds: an object of ItemList
-        using `process_one` to process each item of `ds.items` and put them into an array,
-        and then assign back to `ds.items`.
+        ----what
+        `PreProcessor.process`:
+            1. ds: an object of ItemList
+            2. using `process_one` to process each item of `ds.items` 
+            3. and put them into an array,
+            4. assign the array back to `ds.items`.
         """
         ds.items = array([self.process_one(item) for item in ds.items])
 
