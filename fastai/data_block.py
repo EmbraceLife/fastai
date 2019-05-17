@@ -192,17 +192,26 @@ class ItemList():
         return f'{self.__class__.__name__} ({len(self.items)} items)\n{show_some(items)}\nPath: {self.path}'
 
     def process(self, processor:PreProcessors=None):
+        """
         "Apply `processor` or `self.processor` to `self`."
+        
+        ----what
+        `ItemList.process`:
+            1. assign `processor` to `self.processor`
+            2. make `self.processor` a list
+            3. apply all processors to `self`
+            4. return `self`
+
+        ----internals
+        `p.process(self)`: `CategoryProcessor.process(self)` for example
+
+        ----Note:
+        `CategoryList` uses `ItemList.process`
+        """
         if processor is not None: self.processor = processor
         self.processor = listify(self.processor)
         for p in self.processor: p.process(self)
         return self
-        """
-        How does `ItemList.process` or `y.process(yp)` work?
-        `self` is an object of `ItemList` or its subclasses
-        `processor` is one or more `PreProcessors` objects
-        Behind the scenes, we put all of `processor` into a list and apply them all to the `self`.
-        """
 
     def process_one(self, item:ItemBase, processor:PreProcessors=None):
         "Apply `processor` or `self.processor` to `item`."
