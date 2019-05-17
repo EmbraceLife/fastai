@@ -869,7 +869,20 @@ class LabelLists(ItemLists):
         return xp,yp
 
     def process(self):
+        """
         "Process the inner datasets."
+        
+        ----what
+        `LabelLists.process`:
+            1. get processors for both x and y
+            2. apply these processors to training, validation and test sets
+            3. run `ds.warn` if available
+
+        ----internals
+        `LabelList.process`: to apply processors to x and y in a labellist
+        `LabelLists.get_processors`: get processors for x and y from a labellists
+        `LabelList.warn`: a warning message function?
+        """
         xp,yp = self.get_processors()
         for ds,n in zip(self.lists, ['train','valid','test']): ds.process(xp, yp, name=n)
         #progress_bar clear the outputs so in some case warnings issued during processing disappear.
