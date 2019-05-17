@@ -640,9 +640,12 @@ class CategoryProcessor(PreProcessor):
 
     def process_one(self,item):
         """
-        item: any element of items
-        c2i: a dictionary from classes to indexes
-        it basically uses `item` as key of `c2i` to return `index` as the value 
+        ----what:
+        `CategoryProcessor.process_one`:
+            1. if `item` is `EmptyLabel`, return `item`
+            2. otherwise, use `item` as key of `self.c2i` to get index out
+            3. if index is None, print out warning message
+            4. return res or the index
         """
         if isinstance(item, EmptyLabel): return item
         res = self.c2i.get(item,None)
@@ -662,7 +665,7 @@ class CategoryProcessor(PreProcessor):
         ----internals
         `CategoryProcessor.generate_classes`: from `labels` get `classes`
         `CategoryProcessor.create_classes`: create `c2i`
-        `PreProcessor.process`
+        `PreProcessor.process`: turn `ds.items` into an array
         """
         if self.classes is None: self.create_classes(self.generate_classes(ds.items))
         ds.classes = self.classes
