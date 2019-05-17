@@ -647,18 +647,24 @@ class CategoryProcessor(PreProcessor):
         return res
 
     def process(self, ds):
+        """
+        ----what
+        `CategoryProcessor.process`:
+            1. create `classes` from `labels`
+            2. create `c2i` dict from `classes`
+            3. assign `classes` to e.g. `CategoryList.classes`
+            4. assign `c2i` to e.g., `CategoryList.c2i`
+            5. let `PreProcessor.process(ds)`
+
+        ----internals
+        `CategoryProcessor.generate_classes`: from `labels` get `classes`
+        `CategoryProcessor.create_classes`: create `c2i`
+        `PreProcessor.process`
+        """
         if self.classes is None: self.create_classes(self.generate_classes(ds.items))
         ds.classes = self.classes
         ds.c2i = self.c2i
         super().process(ds)
-        """
-        How does `CategoryProcessor.process` work?
-        `self` is an object of `CategoryProcessor`
-        `ds` is an object of `CategoryList`
-        `classes` is a list of unique labels
-        `c2i` is a dictionary from `classes` to `indexes`
-        it basically generates values for `ds.classes` and `ds.c2i` which previously are `None` and non-exist respectively.
-        """
 
     def __getstate__(self): return {n:getattr(self,n) for n in self.state_attrs}
     def __setstate__(self, state:dict):
