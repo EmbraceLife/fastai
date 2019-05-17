@@ -1091,7 +1091,19 @@ class LabelList(Dataset):
         return res
 
     def process(self, xp:PreProcessor=None, yp:PreProcessor=None, name:str=None):
+        """
         "Launch the processing on `self.x` and `self.y` with `xp` and `yp`."
+        
+        ----what
+        `LabelList.process`:
+            1. use `yp` to process `self.y`
+            2. if `self.y.filter_missing_y` was set True
+            3. then get missing labels as 1s in an array, `filt`
+            4. create warning messages about missing labels
+            5. filter out missing labels for both `self.x` and `self.y`
+            6. use `xp` to process `self.x`
+            7. return self 
+        """
         self.y.process(yp)
         if getattr(self.y, 'filter_missing_y', False):
             filt = array([o is None for o in self.y.items])
