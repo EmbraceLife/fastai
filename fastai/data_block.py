@@ -592,10 +592,25 @@ class EmptyLabelList(ItemList):
 class CategoryProcessor(PreProcessor):
     "`PreProcessor` that create `classes` from `ds.items` and handle the mapping."
     def __init__(self, ds:ItemList):
+        """
+        `CategoryProcessor.__init__`:
+            1. use `CategoryList.classes` to create `self.classes` and `self.c2i`
+            2. assign ['classes'],[] to self.state_attrs,self.warns
+            3. `PreProcessor` passes down property `self.ref_ds = ds`
+
+        ----internals
+        `CategoryProcessor.create_classes`: 
+        """
         self.create_classes(ds.classes)
         self.state_attrs,self.warns = ['classes'],[]
 
     def create_classes(self, classes):
+        """
+        ----what
+        `CategoryProcessor.create_classes`:
+            1. assign input `classes` to `self.classes`
+            2. `enumerate(classes)` to create `self.c2i` dict
+        """
         self.classes = classes
         if classes is not None: self.c2i = {v:k for k,v in enumerate(classes)}
         
