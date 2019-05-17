@@ -247,6 +247,8 @@ class ItemList():
 
     def __getitem__(self,idxs:int)->Any:
         """
+        returns a single item based in an integer index or an `ItemList` object if `idxs` is a range.
+
         `ItemList.__getitem__`:
             1. when `idxs` is a single number, return `self.get(idxs)`
             2. when a range of numbers, return a new `ItemList` of those items
@@ -1062,6 +1064,26 @@ class LabelList(Dataset):
     def __setstate__(self,data:Any): self.__dict__.update(data)
 
     def __getitem__(self,idxs:Union[int,np.ndarray])->'LabelList':
+        """
+        return a single (x, y) or a new `LabelList` object if `idxs` is a range.
+        ----what
+        `LabelList.__getitem__`: 
+            1. if `idxs` is an integer, then it returns
+               a single item from `self.x` and `self.y` y, e.g., an Image object and a label
+            2. return a new labelist from when idxs is a range
+
+        ----internal steps
+            1. check whether `idxs` is an integer or a range
+            2. if it is an integer, then 
+                1. get `self.x[idxs]` and `self.y[idxs]` as x, y
+                2. apply transformations to `x`, `y`
+            3. if it is a range, 
+                1. create an itemlist of x and an itemlist of y
+                2. return a new LabelList with the two lists above 
+        
+        ----internal methods
+        `ItemList.apply_tfms`
+        """
         idxs = try_int(idxs)
         if isinstance(idxs, Integral):
             if self.item is None: x,y = self.x[idxs],self.y[idxs]
