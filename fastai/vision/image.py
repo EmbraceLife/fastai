@@ -234,14 +234,23 @@ class Image(ItemBase):
               cmap:str=None, y:Any=None, **kwargs):
         """
         Show image on `ax` with `title`, using `cmap` if single-channel, overlaid with optional `y`
-        `show` handles plotting for both  x and y with title.
-        `show_image` does heavy lifting on ax, axis, cmap, figsize.
-        ax: matplotlib.pyplot axes on which show the image
-        figsize: Size of the figure
-        title: Title to display on top of the graph
-        hide_axis: If True, the axis of the graph are hidden
-        cmap: Color map used only when a single channel image
-        y: Potential target to be superposed on the same graph (mask, bounding box, points)
+        
+        ----what:
+        `Image.show`:
+            1. plot `self` while setting title, figsize
+            2. set `y`/label as title, or use a string as `title`
+            3. if `convert_mode='L'`, we can set `cmap` to change color
+            4. it returns a real image in nb, but in ipython
+            5. we need to run `plt.show()` to show image
+
+        ----internal:
+            `show_image`: does heavy lifting on ax, axis, cmap, figsize.
+            `ax`: matplotlib.pyplot axes on which show the image
+            `figsize`: Size of the figure
+            `title`: Title to display on top of the graph
+            `hide_axis`: If True, the axis of the graph are hidden
+            `cmap`: Color map used only when a single channel image
+            `y`: Potential target to be superposed on the same graph (mask, bounding box, points)
         """
         cmap = ifnone(cmap, defaults.cmap)
         ax = show_image(self, ax=ax, hide_axis=hide_axis, cmap=cmap, figsize=figsize)
