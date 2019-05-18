@@ -198,10 +198,24 @@ def _crop_pad_image_points(x, size, padding_mode='reflection', row_pct = 0.5, co
     return crop(x,(rows,cols), row_pct, col_pct)
 
 def _crop_pad(x, size, padding_mode='reflection', row_pct:uniform = 0.5, col_pct:uniform = 0.5):
+    """
+    `_crop_pad`:
+        1. to make a choice between running two functions
+        2. if `x` is an object of `ImagePoints`, run `_crop_pad_image_points`
+        3. if not, run `_crop_pad_default`
+
+    ----inputs:
+    `x`: an instance of `ImagePoints` or something else
+    `size`: 
+    `padding_mode`: default to `reflection`
+    `row_pct`: 0.5
+    `col_pct`: 0.5
+    """
     f_crop_pad = _crop_pad_image_points if isinstance(x, ImagePoints) else _crop_pad_default
     return f_crop_pad(x, size, padding_mode, row_pct, col_pct)
 
 crop_pad = TfmCrop(_crop_pad)
+# crop_pad is to pass `_crop_pad` method onto `TfmCrop` class
 
 def _image_maybe_add_crop_pad(img, tfms):
     tfm_names = [tfm.__name__ for tfm in tfms]
