@@ -515,7 +515,26 @@ class Transform():
                 lambda x, *args, **kwargs: self.calc(x, *args, **kwargs))
 
     def __call__(self, *args:Any, p:float=1., is_random:bool=True, use_on_y:bool=True, **kwargs:Any)->Image:
+        """
         "Calc now if `args` passed; else create a transform called prob `p` if `random`."
+        
+        ----what
+        `Transform.__call__`:
+            1. after an instance of `Transform` is created, 
+            2. when such an instance is called as a function,
+            3. below is what the function inside is like
+
+        ----example
+        `pad(padding=padding, mode=mode)`
+            1. `pad` = `TfmPixel(_pad, order=-10)
+                a. `TfmPixel` is a subclass of `Transform`
+                b. `TfmPixel(_pad, order=-10) is using `Transform.__init__`
+                   to instantiate an instance of `TfmPixel`
+            2. `pad(padding=padding, mode=mode)`
+                a. `pad(...)` is calling the instance as a function
+                b. so here we got to use `TfmPixel.__call__` which is 
+                   `Transform.__call__`
+        """
         if args: return self.calc(*args, **kwargs)
         else: return RandTransform(self, kwargs=kwargs, is_random=is_random, use_on_y=use_on_y, p=p)
 
@@ -625,7 +644,17 @@ class TfmAffine(Transform):
     "Decorator for affine tfm funcs."
     order,_wrap = 5,'affine'
 class TfmPixel(Transform):
+    """
     "Decorator for pixel tfm funcs."
+    
+    ----what
+    `TfmPixel`
+        1. a subclass of `Transform`
+        2. specifies `Transform`'s class attributes
+            a. `_wrap` to be 'pixel'
+            b. `order` to be 10
+        3. when instantiate `TfmPixel`, uses `Transform.__init__`
+    """
     order,_wrap = 10,'pixel'
 class TfmCoord(Transform):
     "Decorator for coord tfm funcs."

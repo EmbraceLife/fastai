@@ -129,6 +129,8 @@ def _pad(x, padding:int, mode='reflection'):
     f_pad = _pad_image_points if isinstance(x, ImagePoints) else  _pad_default
     return f_pad(x, padding, mode)
 
+# instantiate a `TfmPixel` which is a subclass of `Transform`
+# the `__init__` is from `Transform.__init__`
 pad = TfmPixel(_pad, order=-10)
 
 def _cutout(x, n_holes:uniform_int=1, length:uniform_int=40):

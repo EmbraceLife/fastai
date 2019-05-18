@@ -1,0 +1,17 @@
+from fastai.basics import *
+from fastai.vision import *
+path_data = untar_data(URLs.MNIST_TINY)
+tfms = get_transforms(do_flip=False)
+data = (ImageList.from_folder(path_data)
+        .split_by_folder()
+        .label_from_folder()
+        .transform(tfms, size=32)
+        .databunch()
+        .normalize(imagenet_stats))
+data.show_batch()
+data.show_batch(rows=3, figsize=(4,4))
+learn = cnn_learner(data, models.resnet18, metrics=accuracy)
+learn.fit_one_cycle(1, 1e-2)
+learn.save('mini_train')
+learn.show_results()
+learn.show_results(ds_type=DatasetType.Train, rows=4, figsize=(8,10))
