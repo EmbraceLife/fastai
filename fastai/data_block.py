@@ -246,17 +246,13 @@ class ItemList():
         return self
 
     def __getitem__(self,idxs:int)->Any:
-<<<<<<< HEAD
         """
-        returns a single item based in an integer index or an `ItemList` object if `idxs` is a range.
+        "returns a single item based if `idxs` is an integer or a new `ItemList` object if `idxs` is a range."
 
         `ItemList.__getitem__`:
             1. when `idxs` is a single number, return `self.get(idxs)`
             2. when a range of numbers, return a new `ItemList` of those items
         """
-=======
-        "returns a single item based if `idxs` is an integer or a new `ItemList` object if `idxs` is a range."
->>>>>>> master
         idxs = try_int(idxs)
         if isinstance(idxs, Integral): return self.get(idxs)
         else: return self.new(self.items[idxs], inner_df=index_row(self.inner_df, idxs))
@@ -1068,9 +1064,8 @@ class LabelList(Dataset):
     def __setstate__(self,data:Any): self.__dict__.update(data)
 
     def __getitem__(self,idxs:Union[int,np.ndarray])->'LabelList':
-<<<<<<< HEAD
         """
-        return a single (x, y) or a new `LabelList` object if `idxs` is a range.
+        "return a single (x, y) if `idxs` is an integer or a new `LabelList` object if `idxs` is a range."
         ----what
         `LabelList.__getitem__`: 
             1. if `idxs` is an integer, then it returns
@@ -1089,9 +1084,6 @@ class LabelList(Dataset):
         ----internal methods
         `ItemList.apply_tfms`
         """
-=======
-        "return a single (x, y) if `idxs` is an integer or a new `LabelList` object if `idxs` is a range."
->>>>>>> master
         idxs = try_int(idxs)
         if isinstance(idxs, Integral):
             if self.item is None: x,y = self.x[idxs],self.y[idxs]
