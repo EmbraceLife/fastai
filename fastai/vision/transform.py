@@ -106,7 +106,19 @@ def _pad_coord(x, row_pad:int, col_pad:int, mode='zeros'):
     return x
 
 def _pad_default(x, padding:int, mode='reflection'):
+    """
     "Pad `x` with `padding` pixels. `mode` fills in space ('zeros','reflection','border')."
+    
+    ----what 
+    `_pad_default`:
+        1. default way of transforming `x` by padding it
+
+    ----how
+        1. set `mode` from choices of `zeros`, `reflection`, `border`
+        2. `x[None]`: add one more dimension to `x`
+        3. `(padding,)*4`: only add padding to the last two dimensions
+        4. use `nn.Functional.pad` to do actual padding transformation 
+    """
     mode = _pad_mode_convert[mode]
     return F.pad(x[None], (padding,)*4, mode=mode)[0]
 
