@@ -220,7 +220,15 @@ def rand_zoom(scale:uniform=1.0, p:float=1.):
     return zoom(scale=scale, **rand_pos, p=p)
 
 def rand_crop(*args, padding_mode='reflection', p:float=1.):
+    """
     "Randomized version of `crop_pad`."
+    
+    ----what
+    `rand_crop`:
+        1. a specific version of `crop_pad`
+        2. fixed `padding_mode` on `reflection`
+        3. set `p` as 1.0
+    """
     return crop_pad(*args, **rand_pos, padding_mode=padding_mode, p=p)
 
 def zoom_crop(scale:float, do_rand:bool=False, p:float=1.0):
