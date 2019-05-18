@@ -246,6 +246,7 @@ class ItemList():
         return self
 
     def __getitem__(self,idxs:int)->Any:
+<<<<<<< HEAD
         """
         returns a single item based in an integer index or an `ItemList` object if `idxs` is a range.
 
@@ -253,6 +254,9 @@ class ItemList():
             1. when `idxs` is a single number, return `self.get(idxs)`
             2. when a range of numbers, return a new `ItemList` of those items
         """
+=======
+        "returns a single item based if `idxs` is an integer or a new `ItemList` object if `idxs` is a range."
+>>>>>>> master
         idxs = try_int(idxs)
         if isinstance(idxs, Integral): return self.get(idxs)
         else: return self.new(self.items[idxs], inner_df=index_row(self.inner_df, idxs))
@@ -1064,6 +1068,7 @@ class LabelList(Dataset):
     def __setstate__(self,data:Any): self.__dict__.update(data)
 
     def __getitem__(self,idxs:Union[int,np.ndarray])->'LabelList':
+<<<<<<< HEAD
         """
         return a single (x, y) or a new `LabelList` object if `idxs` is a range.
         ----what
@@ -1084,6 +1089,9 @@ class LabelList(Dataset):
         ----internal methods
         `ItemList.apply_tfms`
         """
+=======
+        "return a single (x, y) if `idxs` is an integer or a new `LabelList` object if `idxs` is a range."
+>>>>>>> master
         idxs = try_int(idxs)
         if isinstance(idxs, Integral):
             if self.item is None: x,y = self.x[idxs],self.y[idxs]
@@ -1173,22 +1181,18 @@ class LabelList(Dataset):
         "Set the `tfms` and `tfm_y` value to be applied to the inputs and targets."
         _check_kwargs(self.x, tfms, **kwargs)
         if tfm_y is None: tfm_y = self.tfm_y
-        if tfm_y: _check_kwargs(self.y, tfms, **kwargs)
-        self.tfms,  self.tfmargs   = tfms,kwargs
-        self.tfm_y, self.tfmargs_y = tfm_y,kwargs
-        self.tfms_y = None if tfms is None else list(filter(lambda t: t.use_on_y, listify(tfms)))
+        tfms_y = None if tfms is None else list(filter(lambda t: t.use_on_y, listify(tfms)))
+        if tfm_y: _check_kwargs(self.y, tfms_y, **kwargs)
+        self.tfms,self.tfmargs  = tfms,kwargs
+        self.tfm_y,self.tfms_y,self.tfmargs_y = tfm_y,tfms_y,kwargs
         return self
 
     def transform_y(self, tfms:TfmList=None, **kwargs):
         "Set `tfms` to be applied to the targets only."
-        _check_kwargs(self.y, tfms, **kwargs)
-        self.tfm_y=True
-        if tfms is None:
-            self.tfms_y = list(filter(lambda t: t.use_on_y, listify(self.tfms)))
-            self.tfmargs_y = {**self.tfmargs, **kwargs}
-        else:
-            tfms = list(filter(lambda t: t.use_on_y, tfms))
-            self.tfms_y,self.tfmargs_y = tfms,kwargs
+        tfms_y = list(filter(lambda t: t.use_on_y, listify(self.tfms if tfms is None else tfms)))
+        tfmargs_y = {**self.tfmargs, **kwargs} if tfms is None else kwargs
+        _check_kwargs(self.y, tfms_y, **tfmargs_y)
+        self.tfm_y,self.tfms_y,self.tfmargs_y=True,tfms_y,tfmargs_y
         return self
 
     def databunch(self, **kwargs):
