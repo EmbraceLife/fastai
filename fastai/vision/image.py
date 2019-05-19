@@ -578,7 +578,29 @@ class RandTransform():
     def __post_init__(self): functools.update_wrapper(self, self.tfm)
 
     def resolve(self)->None:
+        """
         "Bind any random variables in the transform."
+        
+        ----what
+        `Transform.resolve`:
+            0. apply random functions on args inside `kwargs`, e.g., `row_pct`
+            1. every time run it, will generate different random values
+            2. to fill the blank dict of `resolved`
+
+        ----internals
+            1. if `self.is_random` is False, 
+               just take {**self.tfm.def_args, **self.kwargs} as `self.resolved`
+            2. if keys inside `self.kwargs` matches items in `self.tfm.params`
+               then run random function from `self.tfm.params` 
+               on values inside `self.kwargs`, and saved inside `resolved`
+               e.g., self.resolved[k] = rand_func(*listify(v))
+            3. if not, use save values inside `resolved`
+            4. save values of keys from `self.tfm.def_args` but not already 
+               in `resolved`, into `resolved`
+            5. save values of keys from `self.tfm.params`  but not already
+               in `resolved` and not `return`, 
+               then run `v()` and save into `resolved`
+        """
         if not self.is_random:
             self.resolved = {**self.tfm.def_args, **self.kwargs}
             return
