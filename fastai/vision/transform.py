@@ -123,6 +123,13 @@ def _pad_default(x, padding:int, mode='reflection'):
     return F.pad(x[None], (padding,)*4, mode=mode)[0]
 
 def _pad_image_points(x, padding:int, mode='reflection'):
+    """
+    ----what
+    `_pad_image_points`:
+        1. it is a simple refactor on `_pad_coord`
+        2. setting same number of `padding` for both row and col of image 
+        3. default `mode` on `reflection`
+    """
     return _pad_coord(x, padding, padding, mode)
 
 def _pad(x, padding:int, mode='reflection'):
