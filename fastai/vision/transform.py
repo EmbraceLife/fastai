@@ -246,7 +246,22 @@ def _crop(x, size, row_pct:uniform=0.5, col_pct:uniform=0.5):
 crop = TfmPixel(_crop)
 
 def _crop_pad_default(x, size, padding_mode='reflection', row_pct:uniform = 0.5, col_pct:uniform = 0.5):
+    """
     "Crop and pad tfm - `row_pct`,`col_pct` sets focal point."
+    
+    ----what
+    `_crop_pad_default`:
+        1. combine `_pad_default` and `_crop_default` together
+        2. `size` is the crop size but also help to calc padding number
+        3. only when `size` is greater than image length and width,
+           then padding is calculated, 
+        4. otherwise, no padding
+
+    ----internals
+    `tis2wh`: turn `size` into the rows and cols of image
+    `_minus_epsilon`: minus epsilon to make a little random, I guess
+    `F.pad`: do padding transform
+    """
     padding_mode = _pad_mode_convert[padding_mode]
     size = tis2hw(size)
     if x.shape[1:] == torch.Size(size): return x
