@@ -126,6 +126,20 @@ def _pad_image_points(x, padding:int, mode='reflection'):
     return _pad_coord(x, padding, padding, mode)
 
 def _pad(x, padding:int, mode='reflection'):
+    """
+    ----what
+    `_pad`: 
+        1. if `x` or image is instance of `ImagePoints`
+           then run `_pad_image_points(x, padding, mode)`
+        2. if not, 
+           then run `_pad_default(x, padding, mode)`
+        3. so `_pad` can handle padding for `ImagePoints` and else.
+
+    ----inputs
+    `x`: image tensor
+    `padding`: an integer, no default value
+    `mode`: default on `reflection`
+    """
     f_pad = _pad_image_points if isinstance(x, ImagePoints) else  _pad_default
     return f_pad(x, padding, mode)
 
