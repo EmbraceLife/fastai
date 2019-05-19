@@ -80,7 +80,11 @@ class Image(ItemBase):
     @property
     def shape(self)->Tuple[int,int,int]: return self._px.shape
     @property
-    def size(self)->Tuple[int,int]: return self.shape[-2:]
+    def size(self)->Tuple[int,int]: 
+        """
+        return the last two dimension values from `self.shape`
+        """
+        return self.shape[-2:]
     @property
     def device(self)->torch.device: return self._px.device
 
