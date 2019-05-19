@@ -131,6 +131,9 @@ def _pad(x, padding:int, mode='reflection'):
 
 # instantiate a `TfmPixel` which is a subclass of `Transform`
 # the `__init__` is from `Transform.__init__`
+# ----inputs
+# func: `_pad`
+# order: -10
 pad = TfmPixel(_pad, order=-10)
 
 def _cutout(x, n_holes:uniform_int=1, length:uniform_int=40):
