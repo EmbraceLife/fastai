@@ -523,6 +523,9 @@ class Transform():
             1. after an instance of `Transform` is created, 
             2. when such an instance is called as a function,
             3. below is what the function inside is like
+            4. basically it asks `RandTransform` to wrap around 
+               an `Transform` instance for storing itself and 
+               other input args
 
         ----example
         `pad(padding=padding, mode=mode)`
@@ -550,7 +553,17 @@ class Transform():
 
 @dataclass
 class RandTransform():
+    """
     "Wrap `Transform` to add randomized execution."
+    
+    ----what
+    `RandTransform`:
+        1. it wraps around an instance of `Transform` with the following 
+        2. also store its args
+        3. default `p` to 1.0 to make sure this transform will run
+        4. default `is_random` to True to make sure a random execution
+        5. default `use_on_y` to True to make sure applying to labels
+    """
     tfm:Transform
     kwargs:dict
     p:float=1.0
