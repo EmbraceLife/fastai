@@ -239,7 +239,20 @@ Image._maybe_add_crop_pad = _image_maybe_add_crop_pad
 rand_pos = {'row_pct':(0,1), 'col_pct':(0,1)}
 
 def rand_pad(padding:int, size:int, mode:str='reflection'):
+    """
     "Fixed `mode` `padding` and random crop of `size`"
+    
+    ----what
+    `rand_pad`
+        1. create a padding transform with `pad`
+        2. create a cropping transform with `crop`
+        3. put them into a list
+
+    ----inputs
+    `padding`: number of padding on each side
+    `size`: size of image
+    `mode`: padding mode default on `reflection`
+    """
     return [pad(padding=padding,mode=mode),
             crop(size=size, **rand_pos)]
 
