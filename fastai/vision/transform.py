@@ -208,6 +208,11 @@ def _crop(x, size, row_pct:uniform=0.5, col_pct:uniform=0.5):
     f_crop = _crop_image_points if isinstance(x, ImagePoints) else _crop_default
     return f_crop(x, size, row_pct, col_pct)
 
+# ----what
+#    1. `TfmPixel` is a subclass of `Transform`
+#    2. `TfmPixel(_crop)` is to create an instance with `Transform.__init__`
+# ----inputs
+#    1. `_crop`: a function to do cropping
 crop = TfmPixel(_crop)
 
 def _crop_pad_default(x, size, padding_mode='reflection', row_pct:uniform = 0.5, col_pct:uniform = 0.5):
