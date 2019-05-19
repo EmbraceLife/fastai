@@ -186,7 +186,23 @@ def _minus_epsilon(row_pct:float, col_pct:float, eps:float=1e-7):
     return row_pct,col_pct
 
 def _crop_default(x, size, row_pct:uniform=0.5, col_pct:uniform=0.5):
+    """
     "Crop `x` to `size` pixels. `row_pct`,`col_pct` select focal point of crop."
+    
+    ----what
+    `_crop_default`
+        1. shrink image's row and col to (size, size)
+        2. use `row_pct` and `col_pct` to select 
+           the focal point of image to crop/cut
+
+    ----inputs
+    `x`: `ImageTensor`, just a tensor 
+    `size`: the length of row and col of image tensor returned
+    `row_pct` and `col_pct`: 
+        a. (0.5, 0.5): center
+        b. (0.1, 0.1): top left
+        c. (0.8, 0.8): bottom right
+    """
     rows,cols = tis2hw(size)
     row_pct,col_pct = _minus_epsilon(row_pct,col_pct)
     row = int((x.size(1)-rows+1) * row_pct)
