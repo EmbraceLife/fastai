@@ -117,7 +117,32 @@ class Image(ItemBase):
     def apply_tfms(self, tfms:TfmList, do_resolve:bool=True, xtra:Optional[Dict[Callable,dict]]=None,
                    size:Optional[Union[int,TensorImageSize]]=None, resize_method:ResizeMethod=None,
                    mult:int=None, padding_mode:str='reflection', mode:str='bilinear', remove_out:bool=True)->TensorImage:
+        """
         "Apply all `tfms` to the `Image`, if `do_resolve` picks value for random args."
+        ----what
+        `Image.apply_tfms`:
+            1. basically, it is to apply all `tfms` to the image
+            2. if `do_resolve` is true, args are using random values
+
+        ----internals
+        1. `tfms`, `xtra` and `size` are all None, just return `self` the image
+        2. put `tfms` into a list
+        3. if `xtra` is None, make it `{}`
+        4. choose a `ResizeMethod` based on `size`
+        5. choose to add `crop_pad` onto `tfms` based on `resize_method` and `size`
+        6. sort `tfms` based on each `tfm` order number
+        7. choose to resolve all `tfms`
+        8. make a copy of `self` into `x`
+        9. put these args into a dict of `x`, named `sample_kwargs`
+        10. set the crop_target or the width and height of the image cropped out
+        11. Calc size of `img` to fit in `crop_target` - adjust based on `do_crop`
+            with `_get_resize_target(x, crop_target, 
+            do_crop=(resize_method==ResizeMethod.CROP))`
+        12. then `resize` x based on the new target size
+        13. select all `TfmCrop` transforms into a list `size_tfms`
+        14. apply the transforms selected
+        15. refresh the image `x`
+        """
         if not (tfms or xtra or size): return self
         tfms = listify(tfms)
         xtra = ifnone(xtra, {})
