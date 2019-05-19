@@ -430,7 +430,23 @@ skew = TfmCoord(_skew)
 def get_transforms(do_flip:bool=True, flip_vert:bool=False, max_rotate:float=10., max_zoom:float=1.1,
                    max_lighting:float=0.2, max_warp:float=0.2, p_affine:float=0.75,
                    p_lighting:float=0.75, xtra_tfms:Optional[Collection[Transform]]=None)->Collection[Transform]:
+    """
     "Utility func to easily create a list of flip, rotate, `zoom`, warp, lighting transforms."
+    
+    ----what
+    `get_transforms`:
+        1. return two lists of transforms, one for training set, the other for validation set
+        2. the first list includes the following transforms:
+            a. `rand_crop()`: padding and cropping
+            b. `dihedral_affine()` and `flip_lr()`: 
+                random flipping vertically or horizontally
+            c. `rotate`: rotate images by degrees
+            d. `rand_zoom`: zoom image by scale 
+            e. `brightness`: change the brightness of an image 
+            f. `contrast`: apply scale to contrast of an image
+        3. the second list only has padding and cropping transforms
+
+    """
     res = [rand_crop()]
     if do_flip:    res.append(dihedral_affine() if flip_vert else flip_lr(p=0.5))
     if max_warp:   res.append(symmetric_warp(magnitude=(-max_warp,max_warp), p=p_affine))
