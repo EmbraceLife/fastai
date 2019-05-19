@@ -205,6 +205,20 @@ def _crop_image_points(x, size, row_pct=0.5, col_pct=0.5):
     return x
 
 def _crop(x, size, row_pct:uniform=0.5, col_pct:uniform=0.5):
+    """
+    ----what
+    `_crop`:
+        1. if `x` is an instance of `ImagePoints`
+           then run `_crop_image_points(x, size, row_pct, col_pct)`
+        2. if not
+           then run `_crop_default(x, size, row_pct, col_pct)`
+
+    ----inputs
+    `x`: image tensor
+    `size`
+    `row_pct`: 
+    `col_pct`:
+    """
     f_crop = _crop_image_points if isinstance(x, ImagePoints) else _crop_default
     return f_crop(x, size, row_pct, col_pct)
 
