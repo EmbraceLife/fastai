@@ -882,9 +882,9 @@ class ItemLists():
         
         ----what 
         `LabelLists.transform`:
-            1. apply all tfms for training set  to `self.train`
-            2. apply all tfms for validation set to `self.valid`
-            3. if test set available, apply all tfms for validation set 
+            1. set all tfms for training set  to `self.train`
+            2. set all tfms for validation set to `self.valid`
+            3. if test set available, set all tfms for validation set 
                to `self.test`
         """
         if not tfms: tfms=(None,None)
