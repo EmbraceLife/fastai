@@ -963,10 +963,10 @@ class LabelLists(ItemLists):
         "Create an `DataBunch` from self, `path` will override `self.path`, `kwargs` are passed to `DataBunch.create`."
         
         ----what 
-        `ItemLists.databunch`
+        `LabelLists.databunch`
             1. turn `path` or `self.path` into a Path object
-            2. run `self.x._bunch.create` to create databunch
-               and assign to `data`
+            2. run `self.x._bunch.create` to use e.g. `ImageDataBunch`
+                to create a databunch
             3. check whether `self` has property of `normalize`, 
                if available, do `normalize` the `data`
             4. assign `self` to `data.label_list`
