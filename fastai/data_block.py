@@ -877,7 +877,16 @@ class ItemLists():
         return self
 
     def transform(self, tfms:Optional[Tuple[TfmList,TfmList]]=(None,None), **kwargs):
+        """
         "Set `tfms` to be applied to the xs of the train and validation set."
+        
+        ----what 
+        `LabelLists.transform`:
+            1. apply all tfms for training set  to `self.train`
+            2. apply all tfms for validation set to `self.valid`
+            3. if test set available, apply all tfms for validation set 
+               to `self.test`
+        """
         if not tfms: tfms=(None,None)
         assert is_listy(tfms) and len(tfms) == 2, "Please pass a list of two lists of transforms (train and valid)."
         self.train.transform(tfms[0], **kwargs)
@@ -992,6 +1001,18 @@ class LabelLists(ItemLists):
         return LabelLists.load_state(path, state)
 
 def _check_kwargs(ds:ItemList, tfms:TfmList, **kwargs):
+    """
+    ----what
+    `_check_kwargs`:
+        1. put all `tfms` into a list
+        2. get a single item using `ds[0]`
+        3. apply `tfms` to `ds[0]`
+        4. just check whether the tfms for inputs working or not
+
+    ----inputs
+    `ds`: an ItemList
+    `tfms`: transforms 
+    """
     tfms = listify(tfms)
     if (tfms is None or len(tfms) == 0) and len(kwargs) == 0: return
     if len(ds.items) >= 1:
@@ -1170,7 +1191,22 @@ class LabelList(Dataset):
         return self
 
     def transform(self, tfms:TfmList, tfm_y:bool=None, **kwargs):
+        """
         "Set the `tfms` and `tfm_y` value to be applied to the inputs and targets."
+        
+        ----what
+        `LabelList.transform`:
+            1. apply `tfms` to inputs and `tfm_y` to labels or targets
+            
+        ----internal
+        1. check whether tfms can be applied to `self.x` or not
+        2. extract `tfms_y` for targets or labels transforms
+        3. check whether `tfms_y` can be applied to `self.y` or not
+        4. assign `tfms` to `self.tfms`, `tfms_y` to `self.tfms_Y`
+        5. assign `kwargs` to `self.tfmargs`, `kwargs` to `self.tfmargs_y`
+        6. assign `tfm_y` to `self.tfm_y` on whether apply transforms or not
+
+        """
         _check_kwargs(self.x, tfms, **kwargs)
         if tfm_y is None: tfm_y = self.tfm_y
         tfms_y = None if tfms is None else list(filter(lambda t: t.use_on_y, listify(tfms)))
