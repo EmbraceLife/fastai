@@ -959,7 +959,18 @@ class LabelLists(ItemLists):
     def databunch(self, path:PathOrStr=None, bs:int=64, val_bs:int=None, num_workers:int=defaults.cpus,
                   dl_tfms:Optional[Collection[Callable]]=None, device:torch.device=None, collate_fn:Callable=data_collate,
                   no_check:bool=False, **kwargs)->'DataBunch':
+        """
         "Create an `DataBunch` from self, `path` will override `self.path`, `kwargs` are passed to `DataBunch.create`."
+        
+        ----what 
+        `ItemLists.databunch`
+            1. turn `path` or `self.path` into a Path object
+            2. run `self.x._bunch.create` to create databunch
+               and assign to `data`
+            3. check whether `self` has property of `normalize`
+            4. assign `self` to `data.label_list`
+            5. finally return `data`
+        """
         path = Path(ifnone(path, self.path))
         data = self.x._bunch.create(self.train, self.valid, test_ds=self.test, path=path, bs=bs, val_bs=val_bs,
                                     num_workers=num_workers, device=device, collate_fn=collate_fn, no_check=no_check, **kwargs)
