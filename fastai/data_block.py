@@ -1084,6 +1084,16 @@ class LabelList(Dataset):
     def c(self): return self.y.c
 
     def new(self, x, y, **kwargs)->'LabelList':
+        """
+        ----what
+        `LabelList.new`:
+            1. create a new labellist with x and y
+
+        ----internals
+        1. whether x is an instance of ItemList
+        2. if yes, instantiate a labellist with `LabelList.__init__`
+        3. if not, then create a new instance with `self.new` and process it 
+        """
         if isinstance(x, ItemList):
             return self.__class__(x, y, tfms=self.tfms, tfm_y=self.tfm_y, **self.tfmargs)
         else:
