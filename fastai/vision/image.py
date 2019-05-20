@@ -142,6 +142,9 @@ class Image(ItemBase):
             a 4D tensor with target size in middle dimensions
         13. select all `TfmCrop` transforms into a list `size_tfms`
         14. apply the transforms selected
+            a. apply xtra tfms to x
+            b. apply size_tfms to x
+            c. apply rest tfms to x
         15. refresh the image `x`
         """
         if not (tfms or xtra or size): return self
@@ -573,7 +576,16 @@ class Transform():
         else: return RandTransform(self, kwargs=kwargs, is_random=is_random, use_on_y=use_on_y, p=p)
 
     def calc(self, x:Image, *args:Any, **kwargs:Any)->Image:
+        """
         "Apply to image `x`, wrapping it if necessary."
+        
+        ----what
+        `Transform.calc`
+            1. if `self` has `_wrap` property, 
+               then get a method with `getattr(x, _wrap)`
+               then call this method with the tfm `self.func` and args
+            2. otherwise, just call the tfm on image directly
+        """
         if self._wrap: return getattr(x, self._wrap)(self.func, *args, **kwargs)
         else:          return self.func(x, *args, **kwargs)
 

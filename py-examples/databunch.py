@@ -1,9 +1,9 @@
 from fastai.vision import *
-path = untar_data(URLs.MNIST)
+path = untar_data(URLs.MNIST_TINY)
 il = ImageList.from_folder(path, convert_mode='L')
 defaults.cmap='binary'
 il[0].show()
-labell = il.split_by_folder(train='training', valid='testing').label_from_folder()
+labell = il.split_by_folder(train='train', valid='valid').label_from_folder()
 
 tfms = ([*rand_pad(padding=3, size=28, mode='zeros')], [])
 labell = labell.transform(tfms)
