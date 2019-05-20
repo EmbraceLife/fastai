@@ -104,6 +104,16 @@ class DataBunch():
 
     @staticmethod
     def _init_ds(train_ds:Dataset, valid_ds:Dataset, test_ds:Optional[Dataset]=None):
+        """
+        ----what 
+        `DataBunch._init_ds`: @staticmethod
+                1. if `valid_ds` has an attribute `new`
+                2. then use `valid_ds` create `fix_ds` with `train_ds.x` and `train_ds.y`
+                3. return a list of train_ds, valid_ds and fix_ds and test_ds
+
+        ----internals
+        `valid_ds.new`
+        """
         # train_ds, but without training tfms
         fix_ds = valid_ds.new(train_ds.x, train_ds.y) if hasattr(valid_ds,'new') else train_ds
         return [o for o in (train_ds,valid_ds,fix_ds,test_ds) if o is not None]
