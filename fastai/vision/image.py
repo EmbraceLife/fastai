@@ -138,7 +138,8 @@ class Image(ItemBase):
         11. Calc size of `img` to fit in `crop_target` - adjust based on `do_crop`
             with `_get_resize_target(x, crop_target, 
             do_crop=(resize_method==ResizeMethod.CROP))`
-        12. then `resize` x based on the new target size
+        12. then `resize` x based on the new target size, `_affine_grid` created
+            a 4D tensor with target size in middle dimensions
         13. select all `TfmCrop` transforms into a list `size_tfms`
         14. apply the transforms selected
         15. refresh the image `x`
@@ -555,7 +556,8 @@ class Transform():
             4. basically it asks `RandTransform` to wrap around 
                an `Transform` instance for storing itself and 
                other input args
-
+            5. but if `args` is not None, 
+               then `self.calc` will execute the tfm on the image inside `args`
         ----example
         `pad(padding=padding, mode=mode)`
             1. `pad` = `TfmPixel(_pad, order=-10)
@@ -652,7 +654,14 @@ class RandTransform():
     def order(self)->int: return self.tfm.order
 
     def __call__(self, x:Image, *args, **kwargs)->Image:
+        """
         "Randomly execute our tfm on `x`."
+        
+        ----what
+        `RandTransform`:
+            1. use this function when `RandTransform` instance is called as a func
+            2. it basically asks tfm to apply on image `x` randomly
+        """
         return self.tfm(x, *args, **{**self.resolved, **kwargs}) if self.do_run else x
 
 def _resolve_tfms(tfms:TfmList):
