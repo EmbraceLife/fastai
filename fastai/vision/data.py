@@ -399,7 +399,17 @@ class ImageList(ItemList):
         return Image(t.float().clamp(min=0,max=1))
 
     def show_xys(self, xs, ys, imgsize:int=4, figsize:Optional[Tuple[int,int]]=None, **kwargs):
+        """
         "Show the `xs` (inputs) and `ys` (targets) on a figure of `figsize`."
+       
+        ----internals
+        `ImageList.show_xys`
+            1. find the maximum number for `rows` of figsize
+            2. get `rows` x `rows` number of subplots  assigned to `axs`
+            3. for each ax, plot an x and a y
+            4. make each ax's `ax.axis` off
+            5. make a tight layout to the figure
+        """
         rows = int(np.ceil(math.sqrt(len(xs))))
         axs = subplots(rows, rows, imgsize=imgsize, figsize=figsize)
         for x,y,ax in zip(xs, ys, axs.flatten()): x.show(ax=ax, y=y, **kwargs)
