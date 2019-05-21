@@ -268,7 +268,6 @@ class DataBunch():
         `self.train_ds.x.reconstruct(grab_idx(x, i))`
         `self.train_ds.x.show_xys(xs, ys, **kwargs)`
         """
-        """
         x,y = self.one_batch(ds_type, True, True)
         if reverse: x,y = x.flip(0),y.flip(0)
         n_items = rows **2 if self.train_ds.x._square_show else rows
