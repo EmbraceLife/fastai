@@ -773,7 +773,14 @@ def plot_flat(r, c, figsize):
     return enumerate(plt.subplots(r, c, figsize=figsize)[1].flatten())
 
 def plot_multi(func:Callable[[int,int,plt.Axes],None], r:int=1, c:int=1, figsize:Tuple=(12,6)):
+    """
     "Call `func` for every combination of `r,c` on a subplot"
+    
+    ----what
+    `plot_multi`
+	1. get all (rows x cols)  number of subplots, assigned into `axes`
+	2. loop through each subplot, and make a plot using `func`
+    """
     axes = plt.subplots(r, c, figsize=figsize)[1]
     for i in range(r):
         for j in range(c): func(i,j,axes[i,j])
