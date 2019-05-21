@@ -171,7 +171,27 @@ class ImageDataBunch(DataBunch):
         return [func(channel_view(x), 1) for func in funcs]
 
     def normalize(self, stats:Collection[Tensor]=None, do_x:bool=True, do_y:bool=False)->None:
+        """
         "Add normalize transform using `stats` (defaults to `DataBunch.batch_stats`)"
+
+        ----what
+        `ImageDataBunch.normalize`
+                1. make sure `self` has no attribute `norm`
+                2. if `stats` is not None, 
+                    then set `self.stats` with user input `stats` 
+                3. if None, then generate stats (mean and std) 
+                    using `self.batch_stats()` for `self.stats`
+                4. create normalize and denormalize funcs 
+                    with `normalize_funcs` and `self.stats`
+                    and assigned under `self.norm` and `self.denorm`
+                5. add `self.norm` as a tfm into each `DeviceDataLoader.tfms`
+        
+        ----internals
+        `self.batch_stats()`:
+        `normalize_funcs()`:
+        `self.add_tfm()`:
+        """
+        
         if getattr(self,'norm',False): raise Exception('Can not call normalize twice')
         if stats is None: self.stats = self.batch_stats()
         else:             self.stats = stats
