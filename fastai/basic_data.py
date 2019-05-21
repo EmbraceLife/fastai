@@ -205,7 +205,7 @@ class DataBunch():
         "Get one batch from the data loader of `ds_type`. Optionally `detach` and `denorm`."
 
         ----what 
-        `ImageDataBunch.one_batch`
+        `DataBunch.one_batch`
             1. take a devicedataloader with `DatasetType.Train` from `self`, 
                 assigned to `dl`
             2. assign `self.num_workers` to `w`
@@ -246,7 +246,29 @@ class DataBunch():
             return self.one_batch(ds_type=DatasetType.Single, detach=detach, denorm=denorm, cpu=cpu)
 
     def show_batch(self, rows:int=5, ds_type:DatasetType=DatasetType.Train, reverse:bool=False, **kwargs)->None:
+        """
         "Show a batch of data in `ds_type` on a few `rows`."
+
+        ----what
+        `DataBunch.show_batch`:
+            1. get a batch of x and y, and denorm them if whenever possible
+            2. if `reverse` true, flip x and y both on their first dimension
+            3. if `self.train_ds.x._square_show` true, set `n_items` = rows**2
+                    otherwise, just set `n_items` equal to `rows`
+            4. if training set dataloader's batch_size is less than `n_items`, 
+                then set `n_items` to be the less number. 
+            5. get `n_items` of Image object or 'x' into a list assigned to `xs`
+            6. get a list of y matching `xs`, assigned to `ys`
+            7. print out images by `self.train_ds.x.show_xys(xs, ys, **kwargs)`
+
+        ----internals
+        `self.one_batch`
+        `x.flip(0)`
+        `self.dl(ds_type)`
+        `self.train_ds.x.reconstruct(grab_idx(x, i))`
+        `self.train_ds.x.show_xys(xs, ys, **kwargs)`
+        """
+        """
         x,y = self.one_batch(ds_type, True, True)
         if reverse: x,y = x.flip(0),y.flip(0)
         n_items = rows **2 if self.train_ds.x._square_show else rows
