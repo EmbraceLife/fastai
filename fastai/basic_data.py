@@ -218,7 +218,8 @@ class DataBunch():
                 no gradients are required, and put the tensor onto cpu
             7. check to see whether `self.norm` exist
             8. if both `denorm` and `norm` are true, then run `self.denorm(x)`
-                and `self.denorm(y, do_x=True` to denorm x and y
+            9. if also `norm.keywords.get('do_y', False)` is true, 
+                then denorm y as well
             9. finally return x, y
 
         ----internal
