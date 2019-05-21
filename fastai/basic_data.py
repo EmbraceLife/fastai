@@ -87,6 +87,23 @@ class DataBunch():
     def __init__(self, train_dl:DataLoader, valid_dl:DataLoader, fix_dl:DataLoader=None, test_dl:Optional[DataLoader]=None,
                  device:torch.device=None, dl_tfms:Optional[Collection[Callable]]=None, path:PathOrStr='.',
                  collate_fn:Callable=data_collate, no_check:bool=False):
+        """
+        ----what
+        `DataBunch.__init__`:
+            1. create an instance of DataBunch
+            2. using args like 4 dataloaders, device, dl_tfms, collate_fn, no_check
+
+        ----internals
+        1. put all dl_tfms into a list
+        2. set device, cpu or gpu
+        3. make sure `train_dl` is not an instance of `DeviceDataLoader`
+        4. create a func `_create_dl` to turn a dl into an instance of `DeviceDataLoader`
+        5. turn all dataloaders into instances of DeviceDataLoader
+        6. if fix_dl not available, then use `self.train_dl.new` to create `self.fix_dl`
+        7. create a single sample devicedataloader with `valid_dl` under `self.single_dl`
+        8. get a path object into `self.path`
+        9. if check required, do `sanity_check()`
+        """
         self.dl_tfms = listify(dl_tfms)
         self.device = defaults.device if device is None else device
         assert not isinstance(train_dl,DeviceDataLoader)
