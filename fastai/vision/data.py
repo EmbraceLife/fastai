@@ -391,7 +391,12 @@ class ImageList(ItemList):
         df = pd.read_csv(path/csv_name, header=header)
         return cls.from_df(df, path=path, **kwargs)
 
-    def reconstruct(self, t:Tensor): return Image(t.float().clamp(min=0,max=1))
+    def reconstruct(self, t:Tensor):
+        """
+        `ImageList.reconstruct`
+            1. clamp an Image tensor to be a float between 0 and 1
+        """
+        return Image(t.float().clamp(min=0,max=1))
 
     def show_xys(self, xs, ys, imgsize:int=4, figsize:Optional[Tuple[int,int]]=None, **kwargs):
         "Show the `xs` (inputs) and `ys` (targets) on a figure of `figsize`."
