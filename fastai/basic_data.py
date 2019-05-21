@@ -201,7 +201,31 @@ class DataBunch():
         self.test_dl = DeviceDataLoader(dl, vdl.device, vdl.tfms, vdl.collate_fn)
 
     def one_batch(self, ds_type:DatasetType=DatasetType.Train, detach:bool=True, denorm:bool=True, cpu:bool=True)->Collection[Tensor]:
+        """
         "Get one batch from the data loader of `ds_type`. Optionally `detach` and `denorm`."
+
+        ----what 
+        `ImageDataBunch.one_batch`
+            1. take a devicedataloader with `DatasetType.Train` from `self`, 
+                assigned to `dl`
+            2. assign `self.num_workers` to `w`
+            3. and set `self.num_workers` to be 0
+            4. iterate on the dataloader `dl` and 
+                get a single batch of inputs and labels assigned to `x` and `y`
+            5. assign w back to `self.num_workers`
+            6. detach both x and y if `detach` is true
+            6. detach meaning to get tensors off graph and
+                no gradients are required, and put the tensor onto cpu
+            7. check to see whether `self.norm` exist
+            8. if both `denorm` and `norm` are true, then run `self.denorm(x)`
+                and `self.denorm(y, do_x=True` to denorm x and y
+            9. finally return x, y
+
+        ----internal
+        `to_detach`: get tensors off graph and no gradients are required, 
+            and put the tensor onto cpu
+        """
+        
         dl = self.dl(ds_type)
         w = self.num_workers
         self.num_workers = 0
