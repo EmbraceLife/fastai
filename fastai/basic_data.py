@@ -285,6 +285,12 @@ class DataBunch():
         try_save(self.valid_ds.get_state(**xtra), self.path, file)
 
     def _grab_dataset(self, dl:DataLoader):
+        """
+        ----what
+        `DataBunch._grab_dataset`
+            0. dig into `DeviceDataLoader`, then `DataLoader`, 
+                        even further if necessary to get dataset out 
+        """
         ds = dl.dl.dataset
         while hasattr(ds, 'dataset'): ds = ds.dataset
         return ds
