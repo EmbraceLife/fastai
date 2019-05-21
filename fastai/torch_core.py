@@ -321,7 +321,16 @@ Tensor.__array__ = tensor__array__
 Tensor.ndim = property(lambda x: len(x.shape))
 
 def grab_idx(x,i,batch_first:bool=True):
+    """
     "Grab the `i`-th batch in `x`, `batch_first` stating the batch dimension."
+    
+    ---what 
+    `grab_idx`:
+	1. if `x` is not a list, then return `x[i].cpu()`
+	2. if it is a list, then return a list = [o[i].cpu() for o in x]
+	3. if `batch_first` is False, 
+            then it returns a list of vectors or a single vector???
+    """
     if batch_first: return ([o[i].cpu() for o in x]   if is_listy(x) else x[i].cpu())
     else:           return ([o[:,i].cpu() for o in x] if is_listy(x) else x[:,i].cpu())
 
