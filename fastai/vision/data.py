@@ -404,7 +404,7 @@ class ImageList(ItemList):
        
         ----internals
         `ImageList.show_xys`
-            1. find the maximum number for `rows` of figsize
+            1. fit `len(xs)` items into a square grid, set `rows` as side length 
             2. get `rows` x `rows` number of subplots  assigned to `axs`
             3. for each ax, plot an x and a y
             4. make each ax's `ax.axis` off
