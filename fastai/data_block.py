@@ -978,7 +978,7 @@ class LabelLists(ItemLists):
         """
         path = Path(ifnone(path, self.path))
         data = self.x._bunch.create(self.train, self.valid, test_ds=self.test, path=path, bs=bs, val_bs=val_bs,
-                                    num_workers=num_workers, device=device, collate_fn=collate_fn, no_check=no_check, **kwargs)
+                                    num_workers=num_workers, dl_tfms=dl_tfms, device=device, collate_fn=collate_fn, no_check=no_check, **kwargs)
         if getattr(self, 'normalize', False):#In case a normalization was serialized
             norm = self.normalize
             data.normalize((norm['mean'], norm['std']), do_x=norm['do_x'], do_y=norm['do_y'])
@@ -990,7 +990,8 @@ class LabelLists(ItemLists):
         # if no label passed, use label of first training item
         if label is None: labels = EmptyLabelList([0] * len(items))
         else: labels = self.valid.y.new([label] * len(items)).process()
-        if isinstance(items, ItemList): items = self.valid.x.new(items.items, inner_df=items.inner_df).process()
+        if isinstance(items, MixedItemList): items = self.valid.x.new(items.item_lists, inner_df=items.inner_df).process()
+        elif isinstance(items, ItemList): items = self.valid.x.new(items.items, inner_df=items.inner_df).process()
         else: items = self.valid.x.new(items).process()
         self.test = self.valid.new(items, labels)
         return self
