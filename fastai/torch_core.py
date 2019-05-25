@@ -96,8 +96,11 @@ def to_detach(b:Tensors, cpu:bool=True):
         1. recursively to detach tensors and put on cpu mode (or not)
 
     ----procedures
-        1. to create an _inner function to detach and put on cpu mode (or not)
+        1. to create an `_inner` function to detach and put on cpu mode (or not)
         2. use `recurse` function to recursively apply inner to tensors
+
+    ----internals
+    `x.detach()`: x is Tensor, `detach()` is written in C++, but docs is good.
     """
     def _inner(x, cpu=True):
         if not isinstance(x,Tensor): return x
