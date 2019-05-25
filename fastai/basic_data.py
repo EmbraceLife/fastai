@@ -206,13 +206,21 @@ class DataBunch():
 
         ----what 
         `DataBunch.one_batch`
-            1. take a devicedataloader with `DatasetType.Train` from `self`, 
-                assigned to `dl`
-            2. assign `self.num_workers` to `w`
-            3. and set `self.num_workers` to be 0
+
+        ----inputs
+        ds_type: which dataset to use, default to training set 
+        detach: whether to detach from graph, default to yes
+        denorm: whether to denorm x, y, default to yes
+        cpu: whether to use cpu mode, default to yes
+        
+        ----procedures
+            1. get training set dataloader from `self`, and assigned to `dl`
+            2. store `self.num_workers` to `w`
+            3. set `self.num_workers` to be 0
             4. iterate on the dataloader `dl` and 
-                get a single batch of inputs and labels assigned to `x` and `y`
-            5. assign w back to `self.num_workers`
+                get a single batch of inputs and labels
+                and assigned to `x` and `y`
+            5. restore w back to `self.num_workers`
             6. detach both x and y if `detach` is true
             6. detach meaning to get tensors off graph and
                 no gradients are required, and put the tensor onto cpu
