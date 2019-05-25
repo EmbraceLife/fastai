@@ -59,6 +59,21 @@ def chunks(l:Collection, n:int)->Iterable:
     for i in range(0, len(l), n): yield l[i:i+n]
 
 def recurse(func:Callable, x:Any, *args, **kwargs)->Any:
+    """
+    ----what
+    core.recurse:
+        1. loop through the tensors or `x` to apply `func` to each item
+    
+    ----procedure
+        1. if x is a list, then loop through each item, and 
+            a. run `recurse` again but with each item rather than x
+            b. put the result into a list and return it
+        2. if x is a dict, then loop through each key and value
+            a. then create a dict, keys stay the same but 
+            b. values are to run `recurse` again with `v` rather than `x`
+            c. return the dict
+        3. return `func(x, *args, **kwargs)` 
+    """
     if is_listy(x): return [recurse(func, o, *args, **kwargs) for o in x]
     if is_dict(x):  return {k: recurse(func, v, *args, **kwargs) for k,v in x.items()}
     return func(x, *args, **kwargs)

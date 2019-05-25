@@ -89,7 +89,16 @@ def np_address(x:np.ndarray)->int:
     return x.__array_interface__['data'][0]
 
 def to_detach(b:Tensors, cpu:bool=True):
+    """
     "Recursively detach lists of tensors in `b `; put them on the CPU if `cpu=True`."
+    ----what 
+    torch_core.to_detach
+        1. recursively to detach tensors and put on cpu mode (or not)
+
+    ----procedures
+        1. to create an _inner function to detach and put on cpu mode (or not)
+        2. use `recurse` function to recursively apply inner to tensors
+    """
     def _inner(x, cpu=True):
         if not isinstance(x,Tensor): return x
         x = x.detach()
