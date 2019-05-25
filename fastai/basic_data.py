@@ -225,7 +225,8 @@ class DataBunch():
             6. detach meaning to get tensors off graph and
                 no gradients are required, and put the tensor onto cpu
             7. check to see whether `self.norm` exist
-            8. if both `denorm` and `norm` are true, then run `self.denorm(x)`
+            8. if both `denorm` true and `norm` available, 
+                then run `self.denorm(x)`
             9. if also `norm.keywords.get('do_y', False)` is true, 
                 then denorm y as well
             9. finally return x, y
