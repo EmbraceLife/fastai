@@ -124,9 +124,16 @@ class DataBunch():
         """
         ----what 
         `DataBunch._init_ds`: @staticmethod
-                1. if `valid_ds` has an attribute `new`
-                2. then use `valid_ds` create `fix_ds` with `train_ds.x` and `train_ds.y`
-                3. return a list of train_ds, valid_ds and fix_ds and test_ds
+            1. create and return a list of LabelList on 
+                training, validation, fix and test sets
+           
+        ----procedures 
+            1. if `valid_ds` (a LabelList)  has an attribute `new`
+                a. then use `valid_ds` to create another LabelList  `fix_ds`
+                    using `train_ds.x` and `train_ds.y`
+            3. create a list of LabelList (train_ds, valid_ds, fix_ds, test_ds)
+                a. if they are not None
+            4. return the list
 
         ----internals
         `valid_ds.new`
@@ -144,14 +151,23 @@ class DataBunch():
         
         ----what 
         `DataBunch.create`
-            0. create a databuch
-            1. create a list of datasets with `train_ds`, `valid_ds` and `test_ds`
-            2. set `val_bs` the batch_size of validation set
-            3. create a list of dataloader using 
-                `DataLoader.__init__` with the list of datasets above
+            1. create an instance of DataBunch from a list of dataloaders
+                which are made from a list of datasets/LabelList
+
+        ----procedures
+            1. create a list of datasets (LabelList) with `train_ds`, 
+                `valid_ds`, `fix_ds`  and `test_ds` using `DataBunch._init_ds`
+            2. set `val_bs` the batch_size of validation set or just `bs`
+            3. create a list of dataloader using `DataLoader.__init__`
+                 a. put a LabelList, batch_size, and shuffle or not together
+                    to create a DataLoader
+                 b. create a list of 4 dataloaders using the list of labellist
+                    created above
             4. finally instantiate a databunch with `DataBunch.__init__` and  
                 the list of dataloader created above
-        
+       
+        ----inputs
+            1. `train_ds`, `valid_ds`, `test_ds`: a LabelList 
         """
         datasets = cls._init_ds(train_ds, valid_ds, test_ds)
         val_bs = ifnone(val_bs, bs)

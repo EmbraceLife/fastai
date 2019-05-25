@@ -964,6 +964,10 @@ class LabelLists(ItemLists):
         
         ----what 
         `LabelLists.databunch`
+            1. take path, create `DataBunch` under `data`, 
+                normalize it and put `LabelLists` under `data`
+        
+        ----procedures
             1. turn `path` or `self.path` into a Path object
             2. run `self.x._bunch.create` to use e.g. `ImageDataBunch`
                 to create a databunch and assigned to `data`
