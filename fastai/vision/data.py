@@ -196,15 +196,21 @@ class ImageDataBunch(DataBunch):
 
         ----what
         `ImageDataBunch.normalize`
-                1. make sure `self` has no attribute `norm`
-                2. if `stats` is not None, 
-                    then set `self.stats` with user input `stats` 
-                3. if None, then generate stats (mean and std) 
-                    using `self.batch_stats()` for `self.stats`
-                4. create normalize and denormalize funcs 
-                    with `normalize_funcs` and `self.stats`
-                    and assigned under `self.norm` and `self.denorm`
-                5. add `self.norm` as a tfm into each `DeviceDataLoader.tfms`
+            1. create normalize and denormalize functions for data (x, even y)
+                with mean and std 
+            2. these mean and std are from pretrained dataset or its own data
+            3. add normalize func as tfms to DeviceDataLoader
+            4. so `normalize` only apply to data when DeviceDataLoader do batch
+
+        ----procedures
+            1. make sure `self` has no attribute `norm`
+            2. if `stats` is not None, then set `self.stats=stats`
+            3. otherwise, generate stats (mean and std) for `self.stats`
+                a. using `self.batch_stats()`             
+            4. create normalize and denormalize funcs 
+                a. with `normalize_funcs` and `self.stats`
+                b. and assigned under `self.norm` and `self.denorm`
+            5. add `self.norm` as a tfm into each `DeviceDataLoader.tfms`
         
         ----internals
         `self.batch_stats()`:

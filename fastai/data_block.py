@@ -978,7 +978,6 @@ class LabelLists(ItemLists):
 
         ----internals
         `self.x`: actually calls `LabelLists.__getattr__('x')`
-
         """
         path = Path(ifnone(path, self.path))
         data = self.x._bunch.create(self.train, self.valid, test_ds=self.test, path=path, bs=bs, val_bs=val_bs,
