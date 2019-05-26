@@ -222,6 +222,14 @@ class DataBunch():
 
         ----what 
         `DataBunch.one_batch`
+            1. get a dataloader (default training set) from `self`, 
+            2. iterate a batch from the dataloader
+            3. detach both x and y from the graph
+            4. denorm x and even y 
+
+        ----Note:
+            1. `DataBunch.one_batch` won't shuffle to produce batch
+            2. `DataLoader` upon creation add sampling only to training set
 
         ----inputs
         ds_type: which dataset to use, default to training set 
@@ -251,7 +259,6 @@ class DataBunch():
         `to_detach`: get tensors off graph and no gradients are required, 
             and put the tensor onto cpu
         """
-        
         dl = self.dl(ds_type)
         w = self.num_workers
         self.num_workers = 0
