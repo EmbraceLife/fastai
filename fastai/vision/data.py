@@ -170,22 +170,28 @@ class ImageDataBunch(DataBunch):
 
         ----what
         `ImageDataBunch.batch_stats`:
-                1. if input `funcs` avaliable, set `funcs` as it is
-                2. if not available, assign `[torch.mean, torch.std]` to `funcs`
-                3. use `self.one_batch` to create a single batch 
-                    with training set and no `denorm`
-                4. take data features/inputs from this batch and 
-                    take `cpu()`, assign to `x`
-                5. use `channel_view(x)` to keep channel dimension and 
-                    flatten the rest axis for `x`
-                6. apply both `torch.mean` and `torch.std` to x,  
-                    and put their outputs into a list
+            1. use `torch.mean` and `torch.std` or user-given `funcs` to 
+            2. apply to `x` of a single batch from training set
+            3. this action above will apply to every channel of `x`
+            4. so returns a list of stats for every channel of `x`
+
+        ----procedures
+            1. if input `funcs` avaliable, set `funcs` as it is
+            2. if not available, assign `[torch.mean, torch.std]` to `funcs`
+            3. use `self.one_batch` to create a single batch 
+                with training set but with `denorm` set False
+            4. take only x/features from the batch and put onto cpu, 
+                and assigned to `x` 
+            5. use `channel_view(x)` to keep channel dimension and 
+                flatten the rest axis for `x`
+            6. apply each function inside `funcs` to `x`,  
+                and put their outputs into a list
+            7. return the list of outputs
 
         ----internals
         `self.one_batch`:
         `channel_view`:
         """
-        
         funcs = ifnone(funcs, [torch.mean,torch.std])
         x = self.one_batch(ds_type=ds_type, denorm=False)[0].cpu()
         return [func(channel_view(x), 1) for func in funcs]
