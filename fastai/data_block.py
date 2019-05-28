@@ -393,17 +393,20 @@ class ItemList():
     def split_by_idxs(self, train_idx, valid_idx):
         """
         "Split the data between `train_idx` and `valid_idx`."
-        
+        ----what
         `ItemList.split_by_idxs`:
+            1. split the large itemlist using two lists of files indexes
+
+        ----procedures
+            1. use `self[train_idx]` or `self.__getitem__(train_idx)`
+                to create a new itemlist from a list of indexes
+            2. do the same `valid_idx`
+            3. use `self.split_by_list` to split the large itemlist
+                 by using two smaller itemlist 
+
+        ----inputs
             1. `train_idx`: a list of indxs for training set
             2. `valid_idx`: a list of indxs for validation set
-            3. does the same job as `ItemList.split_by_folder`
-
-        ----internals
-        `ItemList.split_by_list`: 
-            1. instead of taking in two lists above,
-            2. it takes two `self[train_idx]` and `self[valid_idx]`
-            3. these are two new `ItemList`s on training and validation sets
         """
         return self.split_by_list(self[train_idx], self[valid_idx])
 
