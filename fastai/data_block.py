@@ -58,6 +58,15 @@ def get_files(path:PathOrStr, extensions:Collection[str]=None, recurse:bool=Fals
         1. return a list of files extracted from a folder path
         2. usually used by `from_folder` etc, not directly used.
 
+    ----procedures
+    1. if recursive is True, loop through every level of directory
+        2. ignore hidden files and folders, but the rest stuff into a list 
+        3. if `include` is not None, make the list only contain `include` 
+        4. use `_get_files` to extract this level of files with suffix from 
+            `extensions`
+        5. if presort is True, list the files from small name to large name 
+    6. if recursive is False, just extract files from the current level
+
     ----inputs
     `cls`: @classmethod uses cls instead of self
     `path`: folder path
@@ -79,7 +88,6 @@ def get_files(path:PathOrStr, extensions:Collection[str]=None, recurse:bool=Fals
     2. choose to only use a group of subfolders = `include=[some subfolders names]`
     3. hidden folders and files are not extracted
     """
-    # if recurse == True
     if recurse:
         res = []
         for i,(p,d,f) in enumerate(os.walk(path)):
