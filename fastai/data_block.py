@@ -370,7 +370,11 @@ class ItemList():
         """
         "Split the data between `train` and `valid`."
 
+         ----what 
          `ItemList.split_by_list`:
+            1.to create an ItemLists with two itemlist (train, valid sets) 
+            
+         ----procedures   
             1. it actually uses `_split` to provide `ItemLists`
             2. to instantiate an `ItemLists` object with two `ItemList` attached
             3. this `ItemLists` is what `ItemList.split_by_folder`,
@@ -402,7 +406,7 @@ class ItemList():
                 to create a new itemlist from a list of indexes
             2. do the same `valid_idx`
             3. use `self.split_by_list` to split the large itemlist
-                 by using two smaller itemlist 
+                 by using two smaller itemlist to create a ItemLists 
 
         ----inputs
             1. `train_idx`: a list of indxs for training set
