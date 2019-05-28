@@ -129,11 +129,11 @@ class ItemList():
     def __init__(self, items:Iterator, path:PathOrStr='.', label_cls:Callable=None, inner_df:Any=None,
                  processor:PreProcessors=None, x:'ItemList'=None, ignore_empty:bool=False):
         """
-        ----why
+        ----what
         `ItemList.__init__`
             1. prepare the properties for a list of items for calling methods
 
-        ----inputs and internals
+        ----inputs
             1. `_` and `__` prefix are internals
             2. path properties: `path`, `num_parts`
             3. data prperties: `items`, `x`, `ignore_empty`, `inner_df`
