@@ -858,17 +858,31 @@ class ItemLists():
 
     def __getattr__(self, k):
         """
+        ----what
         `ItemLists.__getattr__`:
             1. apply `ItemList.k` to `self.train` and `self.valid`
             2. turn `ItemLists` to `LabelLists`
             3. call `LabelLists.process`
+        
+        ----procedure
+            1. get the method of `self.train.k`, `ft`
+            2. if this method is not callable, just return it
+            3. get the method of `self.valid.k`, `fv`
+            4. make sure this method is callable
+            5. create an `_inner` function
+                a. run `ft` on training set, to get `self.train`
+                b. make sure `self.train` is a LabelList (y created)
+                c. store `self.train.y.__class__`
+                d. run `fv` on validation set, to get `self.valid`
+                e. make `self` from ItemLists to LabelLists
+                f. process `self`
+            6. return _inner
 
         ----inputs
         `k`: string, a method name of `ItemList`
 
         ----internals
-        `LabelLists.process`: to process both labellists inside
-
+        `LabelLists.process`: to process both labellist inside
         """
         # use built-in `getattr` to get method `ItemList.k` 
         # on `self.train` into an object `ft`
