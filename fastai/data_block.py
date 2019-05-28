@@ -415,15 +415,32 @@ class ItemList():
 
     def _get_by_folder(self, name):
         """
+        ----what
         `ItemList._get_by_folder`:
-            1. files of all folders are in the same list of `self.items`;
+            1. get indexes for files from the same subfolder 
+            2. `name`: subfolder name
+            
+        ----procedures
+            1. since all files of all folders are in the same list 
+                of `self.items`;
             2. index all the files with `for i in range_of(self)`
             3. choose a subfolder `name`
             4. select all files with the `name` on into a list
             5. return the list
 
         ----internals:
-        `range_of`: create a range from 0 to len(x) 
+        `range_of`: create a range from 0 to len(x)
+
+        ----make source uncool
+        res = []
+        for i in range_of(self):
+            if isinstance(self.items[i], Path):
+               if self.items[i].parts[self.num_parts][0] == name:
+                   res.append(i)
+            else:
+                if self.items[i].split(os.path.sep)[0] == name:
+                    res.append(i)
+        return res            
         """
         return [i for i in range_of(self) if (self.items[i].parts[self.num_parts] if isinstance(self.items[i], Path)
                 else self.items[i].split(os.path.sep)[0]) == name ]
@@ -431,11 +448,15 @@ class ItemList():
     def split_by_folder(self, train:str='train', valid:str='valid')->'ItemLists':
         """
         "Split the data depending on the folder (`train` or `valid`) in which the filenames are."
-        ----why:
+        ----what
         `ItemList.split_by_folder`:
             1. split a large ItemList into a training ItemList 
                and a validation ItemList;
             2. create an `ItemLists` and  attach both `ItemList` into it.
+
+        ----procedures
+            1. get two subfolders into two lists of indexes 
+            2. split this large itemlist with these two lists
 
         ----inputs:
         `train`: the foldername for training set of files
