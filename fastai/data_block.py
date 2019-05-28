@@ -263,21 +263,22 @@ class ItemList():
         """Create an `ItemList` in `path` from the filenames that have a suffix in `extensions`.
         `recurse` determines if we search subfolders.
 
-        ----why
+        ----what
         `ItemList.from_folder`:
-        1. extract a list of files from a folder, and 
-        2. pass onto `ItemList.__init__` to instantiate an object
+        1. extract a list of files from a folder with `get_files`
+        2. bring all input args and run `ItemList.__init__` to instantiate 
         
         ----inputs
-        `cls`: @classmethod uses cls instead of self
-        `path`: folder path
-        `extensions`: a list of file suffix
-        `recurse`: whether to extract subfolders
-        `include`: a list of folders to extract files from
-        `processor`: a list of processors 
-        `presort`: whether to pre-sort files, e.g. MNIST_TINY
-        `**kwargs`: a dict of additional args with values,
-                    passing onto next level functions  
+        for `get_files`:
+            `path`: folder path
+            `extensions`: a list of file suffix
+            `recurse`: whether to extract subfolders
+            `include`: a list of folders to extract files from
+        for `cls`: `ItemList` 
+            `processor`: a list of processors 
+            `presort`: whether to pre-sort files, e.g. MNIST_TINY
+            `**kwargs`: a dict of additional args with values,
+                        passing onto next level functions  
        
         ----internals
         `get_files`: extract files of folders into a list
