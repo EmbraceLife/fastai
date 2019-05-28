@@ -309,13 +309,17 @@ class ImageList(ItemList):
     _bunch,_square_show,_square_show_res = ImageDataBunch,True,True
     def __init__(self, *args, convert_mode='RGB', after_open:Callable=None, **kwargs):
         """
+        ----what 
         `ImageList.__init__`: 
+            1. create an imagelist object which has a list of image files
+
+        ----procedures    
             1. inherit all properties and methods from `ItemList`
             2. add additional properties for handling images
             3. becomes an `ItemList` for dealing specifically image files
 
         ----inputs:
-        unique from `ItemList`:
+        unique from `ImageList`:
         1. `convert_mode`: image only
         2. `after_open`: to process on image
         3. `kwargs`: a dict of named args with values

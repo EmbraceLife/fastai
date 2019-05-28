@@ -53,14 +53,14 @@ def get_files(path:PathOrStr, extensions:Collection[str]=None, recurse:bool=Fals
               include:Optional[Collection[str]]=None, presort:bool=False)->FilePathList:
     """
     Return list of files in `path` that have a suffix in `extensions`; optionally `recurse`.
-    ----why
+    ----what
     `get_files`: 
         1. return a list of files extracted from a folder path
         2. usually used by `from_folder` etc, not directly used.
 
     ----procedures
-    1. if recursive is True, loop through every level of directory
-        2. ignore hidden files and folders, but the rest stuff into a list 
+    1. if recursive is True, loop through every level of directories
+        2. ignore hidden files and folders, put the rest stuff into a list 
         3. if `include` is not None, make the list only contain `include` 
         4. use `_get_files` to extract this level of files with suffix from 
             `extensions`
@@ -143,11 +143,11 @@ class ItemList():
 
         ----inputs
             1. `_` and `__` prefix are internals
-            2. path properties: `path`, `num_parts`
-            3. data prperties: `items`, `x`, `ignore_empty`, `inner_df`
-            4. label properties: `label_cls`, `_label_list`
-            5. processor properties: `processor`
-            6. split properties: `_split`
+            2. path related: `path`, `num_parts`
+            3. data related: `items`, `x`, `ignore_empty`, `inner_df`
+            4. label related: `label_cls`, `_label_list`
+            5. processor related: `processor`
+            6. split related: `_split`
             7. new-ItemList properites: `copy_new`
             8. calling `__post_init__`
         """
