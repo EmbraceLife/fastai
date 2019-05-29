@@ -742,16 +742,13 @@ class CategoryListBase(ItemList):
         """
         ----what
         `CategoryListBase.__init__`:
-            1. create a categorylistbase for labels
-            2. add unique properties beyond `ItemList`: 
-               `classes`, `filter_missing_y`
-            2. it is to be subclasses for different kinds of labels situations
+            1. create a categorylistbase to be subclassed for labels
 
-        ----internals
-            1. assign default arg `classes` to property `classes`
-            2. set property `filter_missing_y` `True`
-            3. inherit from an ItemList 
-            4. add `classes` to `copy_new`
+        ----procedures
+            1. add unique properties (beyond `ItemList`): 
+               `classes`, `filter_missing_y`
+            2. inherit from ItemList
+            3. when make a copy make sure to copy `classes` too
         """
         self.classes=classes
         self.filter_missing_y = True
@@ -767,18 +764,12 @@ class CategoryList(CategoryListBase):
     def __init__(self, items:Iterator, classes:Collection=None, label_delim:str=None, **kwargs):
         """
         `CategoryList.__init__`:
-            1. create a categorylist for labels
+            0. inherit from `CategoryListBase`
+            1. add `crossEntropyFlat()` as `self.loss_func` 
 
-        ----internals
-            1. non-default args: `items`/`labels`
-            2. default args: `classes` and `label_delim`
-            2. instantiate `CategoryListBase`
-            3. add `CrossEntropyFlat()` as its `loss_func`
-
-        ----Note
-            1. when passing `path=self.path` onto `CategoryList.__init__`
-            2. it has to enter into `kwargs`, as arbitrary args
-            3. as `path=self.path` is not positional, not default args
+        ----note
+            1. `items` and `classes` are used by `CategoryListBase`
+            2. `path` is stored inside `kwargs` for `CategoryListBase` too
         """
         super().__init__(items, classes=classes, **kwargs)
         self.loss_func = CrossEntropyFlat()
@@ -1118,17 +1109,19 @@ class LabelList(Dataset):
         """
         ----what
         `LabelList.__init__`:
-            1. instantiate a labellist to gather 
-            2. inputs `x` and labels `y`
-            3. together with `tfms`
+            0. to create a labellist is to take `x`, `y`, `tfm_y` and `item`
+            1. to be the properties of `self`
+            2. finally, apply `tfms` to self
+            
+        ----procedures    
+            0. take `x`, `y`, `tfm_y` as properties under `self`
+            1. take `x` as property under `self.y`
+            2. assign `None` to `self.item`
+            3. apply `tfms` to `self`
+
+        ----Note
             4. `LabelList` inherits from `torch.utils.data.Dataset`
             5. source `Dataset` for details
-
-        ----internals
-            1. assign non-default args `x`, `y` to properties `x`, `y`
-            2. assign default args `tfm_y` to properties `tfm_y`
-            3. assign property `item` to None
-            4. do `self.transforms` with `tfms` (default args ) and `**kwargs` 
         """
         self.x,self.y,self.tfm_y = x,y,tfm_y
         self.y.x = x
@@ -1297,16 +1290,17 @@ class LabelList(Dataset):
         
         ----what
         `LabelList.transform`:
-            1. apply `tfms` to inputs and `tfm_y` to labels or targets
-            
-        ----internal
-        1. check whether tfms can be applied to `self.x` or not
-        2. extract `tfms_y` for targets or labels transforms
-        3. check whether `tfms_y` can be applied to `self.y` or not
-        4. assign `tfms` to `self.tfms`, `tfms_y` to `self.tfms_Y`
-        5. assign `kwargs` to `self.tfmargs`, `kwargs` to `self.tfmargs_y`
-        6. assign `tfm_y` to `self.tfm_y` on whether apply transforms or not
+            1. get `tfms`, `tfmargs` ready for `x` transformation
+            2. get `tfms_y`, `tfm_y`, `tfmargs_` ready for `y` transformation
+            3. no actual transformation taking place
 
+        ----procedues
+            1. check whether tfms can be applied to `self.x` or not
+            2. get `tfm_y` value ready, a single transform
+            3. get `tfms_y` ready from `tfms` with attribute of `use_on_y`
+            4. check whether `tfm_y` applicable to `self.y` or not
+            5. take `tfms`, `tfms_y`, `tfm_y` as properties to `self`
+            6. assign `kwargs` to `self.tfmargs` and `self.tfmargs_y`
         """
         _check_kwargs(self.x, tfms, **kwargs)
         if tfm_y is None: tfm_y = self.tfm_y
