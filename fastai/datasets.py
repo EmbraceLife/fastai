@@ -241,6 +241,9 @@ def untar_data(url:str, fname:PathOrStr=None, dest:PathOrStr=None, data=True, fo
     Download `url` to `fname` if `dest` doesn't exist, and un-tgz to folder `dest`.
     
     ----why 
+    data ---> url---tgz---un-tgz---path---folder ---> data 
+    
+    ----what
     In general, untar_data uses a url to download a tgz file under fname,
     and then un-tgz fname into a folder under dest.
 

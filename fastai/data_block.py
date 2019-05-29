@@ -1,5 +1,108 @@
-from .torch_core import *
-from .basic_data import *
+"""
+The data block API
+
+Step 1: Provide inputs
+    class ItemList
+        from_folder
+        from_df
+        from_csv
+    
+    Optional step: filter your data
+        filter_by_func
+        filter_by_folder
+        filter_by_rand
+        to_text
+        use_partial_data
+
+    Writing your own ItemList
+        analyze_pred
+        get
+        new
+        reconstruct
+
+Step 2: Split the data between the training and the validation set
+        split_none
+        split_by_rand_pct
+        split_subsets
+        split_by_files
+        split_by_fname_file
+        split_by_folder
+        split_by_idx
+        split_by_idxs
+        split_by_list
+        split_by_valid_func
+        split_from_df
+
+Step 3: Label the inputs
+        get_label_cls
+        label_empty
+        label_from_df
+        label_const
+        label_from_folder
+        label_from_func
+        label_from_re
+    
+    class CategoryList
+    class MultiCategoryList
+    class FloatList
+    class EmptyLabelList
+
+Invisible step: preprocessing
+
+    class PreProcessor
+        process_one
+        process
+
+    class CategoryProcessor
+        generate_classes
+        process
+
+    class MultiCategoryProcessor
+        generate_classes
+
+Optional steps
+
+    Add transforms
+        transform
+   
+    Add a test set
+        add_test
+        add_test_folder
+
+Step 4: convert to a DataBunch
+        databunch
+
+Inner classes
+    class LabelList
+        export
+        transform_y
+        get_state
+        load_empty
+        load_state
+        process
+        set_item
+        to_df
+        to_csv
+        transform
+   
+    class ItemLists
+        label_from_lists
+        transform
+        transform_y
+
+    class LabelLists
+        get_processors
+        load_empty
+        load_state
+        process
+        process
+
+Helper functions
+        get_files
+"""
+
+        from .torch_core import *
+        from .basic_data import *
 from .layers import *
 from numbers import Integral
 
