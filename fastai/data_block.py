@@ -120,6 +120,11 @@ class PreProcessor():
         """
         ----what
         `PreProcessor.process`:
+            0. apply process_one to every item in ds.items
+            1. put all the processing output into an array
+            2. assign the array back to `ds.items`
+            
+        ----procedure    
             1. ds: an object of ItemList
             2. using `process_one` to process each item of `ds.items` 
             3. and put them into an array,
@@ -699,6 +704,9 @@ class CategoryProcessor(PreProcessor):
         """
         ----what:
         `CategoryProcessor.process_one`:
+            1. use each item to access the index from dict `c2i`
+            
+        ----procedure
             1. if `item` is `EmptyLabel`, return `item`
             2. otherwise, use `item` as key of `self.c2i` to get index out
             3. if index is None, print out warning message
@@ -713,11 +721,17 @@ class CategoryProcessor(PreProcessor):
         """
         ----what
         `CategoryProcessor.process`:
+            0. actually doing processing work on the data
+            1. create classes and c2i
+            2. run the super class `PreProcessor.process(ds)`
+
+        ----procedures
             1. create `classes` from `labels`
             2. create `c2i` dict from `classes`
             3. assign `classes` to e.g. `CategoryList.classes`
             4. assign `c2i` to e.g., `CategoryList.c2i`
-            5. let `PreProcessor.process(ds)`
+            5. run `PreProcessor.process(ds)` to do basic processing on 
+                every item from `ds.items`
 
         ----internals
         `CategoryProcessor.generate_classes`: from `labels` get `classes`
@@ -977,14 +991,19 @@ class LabelLists(ItemLists):
         ----what
         `LabelLists.get_processors`: 
             1. instantiate `x` and `y`'s processors for training set
-            2. return the processors objects as `xp`, `yp`
+            2. return all the x Processors objects under `xp`, 
+            3. return all the y Processors objects under `yp`
 
-        ----internals
-        `self.train.x._processor`: class property for ItemList 
-        `self.train.y._processor`: class property for CategorProcessor, e.g.
-        `p(ds=self.train.y)`: instantiate e.g. CategoryProcessor
-            1. put all class processors into a list, procs_x, procs_y
-            2. instantiate all processors and put into a list, xp, yp
+        ----Note
+            1. `self.train.x._processor`: a class property of ItemList 
+            2. `self.train.y._processor`: a class property of CategoryList, e.g.
+            3. `p(ds=self.train.y)`: instantiate e.g. CategoryProcessor
+            
+        ----procedures    
+            1. put all `self.train.x`'s processors into a list, under `procs_x`
+            2. put all `self.train.y`'s processors into a list, under `procs_y`
+            2. both x ande y instantiate their processors and put into a list, 
+                respectively, xp, yp
             3. return xp, yp 
         """
         procs_x,procs_y = listify(self.train.x._processor),listify(self.train.y._processor)
@@ -999,12 +1018,13 @@ class LabelLists(ItemLists):
         ----what
         `LabelLists.process`:
             1. get processors for both x and y
-            2. apply these processors to training, validation and test sets
+            2. apply these processors to x and y for 
+                training, validation and test sets
             3. run `ds.warn` if available
 
         ----internals
-        `LabelList.process`: to apply processors to x and y in a labellist
         `LabelLists.get_processors`: get processors for x and y from a labellists
+        `LabelList.process`: to apply processors to x and y in a labellist
         `LabelList.warn`: a warning message function?
         """
         xp,yp = self.get_processors()
@@ -1254,6 +1274,16 @@ class LabelList(Dataset):
         
         ----what
         `LabelList.process`:
+            1. use a list of xProcessors to process x 
+            2. if `self.y.filter_missing_y` is true, 
+                then filter out both x and y on the missing data 
+            3. use a list of yProcessors to process y 
+            4. return self
+
+        ----Note
+            1. actual processing is done here.
+
+        ----procedures    
             1. use `yp` to process `self.y`
             2. if `self.y.filter_missing_y` was set True
             3. then get missing labels as 1s in an array, `filt`
