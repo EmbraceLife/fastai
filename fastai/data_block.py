@@ -523,14 +523,17 @@ class ItemList():
         """
         "Return `label_cls` or guess one from the first element of `labels`."
         
+        ----what 
         `ItemList.get_label_cls`: 
-            1. get `label_cls` from `labels`
+            1. get `label_cls` from `labels` based the type of `labels`
             2. like a look-up or match-up function
-            3. if `label_cls` or `self.label_cls` is available, return `label_cls`
+            
+        ----procedures    
+            3. if `label_cls` is available, return `label_cls`
             4. if `label_delim` is available, return `MultiCategoryList`
             5. if first item of `labels` is float, return `FloatList`
-            6. if first item of `labels` is int, return `CategoryList`
-            7. if first item of `labels` is collection, return `MultiCategoryList`
+            6. if it is int, return `CategoryList`
+            7. if it is collection, return `MultiCategoryList`
             8. otherwise, return `ItemList`
         """
         if label_cls is not None:               return label_cls
@@ -546,20 +549,24 @@ class ItemList():
         """
         "Label `self.items` with `labels`."
 
-        ----what and how
+        ----what
         `ItemList._label_from_list`:
+            0. extract label class from the list of subfolder names
+            1. instantiate the label class with the list of names
+            2. instantiate a LabelList with `self`/x and label/y
+
+        ----procedures
             1. make sure `from_item_lists` set `True`, 
-               otherwise exception message
             2. turn `labels` into an array of `labels`
-            3. get `label_cls` out of `labels`
-            4. instantiate `label_cls` with `labels`, `path`, `kwargs` to `y`
-            5. create a `LabelList` object with `self` and `y`
-            6. return this labellists 
+            3. get the class of `labels` and assigned to `label_cls`
+            4. instantiate `label_cls` with `labels`, `path`, assigned to `y`
+            5. create a `LabelList` object with `self` and `y`, assigned to res
+            6. return res 
         
         ----internals
-        `ItemList.get_label_cls`: get `label_cls` from `labels`
-        `label_cls(labels, path=self.path, **kwargs)`: instantiate a label cls
-        `self._label_list(x=self, y=y)`: instantiate a `LabelList`
+            1. `ItemList.get_label_cls`: get `label_cls` from `labels`
+            2. `label_cls(labels, path=self.path, **kwargs)`: make a label cls
+            3. `self._label_list(x=self, y=y)`: instantiate a `LabelList`
 
         ----Note
         `from_item_lists`:
@@ -597,24 +604,35 @@ class ItemList():
         """
         "Apply `func` to every input to get its label."
         
-        `ItemList.label_from_func`: 
+        ----what
+        `ItemList.label_from_func`:
+            0. take a lambda func to get all files' subfoldernames 
+                to creat labels
+
+        ----procedures
             1. apply `func` to every item of `self.items`
-            2. put all the output of func into a list
+            2. put all the output of func (file's subfolder name)  into a list
             3. pass the list and `label_cls` and `**kwargs` to 
             4. `ItemList._label_from_list` to create labels
-            
         """
         return self._label_from_list([func(o) for o in self.items], label_cls=label_cls, **kwargs)
 
     def label_from_folder(self, label_cls:Callable=None, **kwargs)->'LabelList':
         """
         "Give a label to each filename depending on its folder."
-        ----why
+        ----what
         `ItemList.label_from_folder`:
+            0. actually create a lambda function to extract subfolder names
+            1. and then use this function to create labels
+
+        ----procedures
             1. build a lambda func to extract subfoldername from a file
-            2. run `ItemList.label_from_func` with inputs like `func`,
+            2. pass lambda to `ItemList.label_from_func` with inputs 
                `label_cls` and `**kwargs`
-            3. to create labels to dataset
+        
+        ----note
+        `label_cls`: used by functions in deeper levels
+        `kwargs`: like above
         """
         return self.label_from_func(func=lambda o: (o.parts if isinstance(o, Path) else o.split(os.path.sep))[-2],
                                     label_cls=label_cls, **kwargs)
@@ -865,16 +883,18 @@ class ItemLists():
             3. call `LabelLists.process`
         
         ----procedure
-            1. get the method of `self.train.k`, `ft`
+            1. get the method of `self.train.k`, `ft`:
+                combines self.train and the method k
             2. if this method is not callable, just return it
-            3. get the method of `self.valid.k`, `fv`
+            3. get the method of `self.valid.k`, `fv`:
+                combines self.valid with the method k
             4. make sure this method is callable
             5. create an `_inner` function
-                a. run `ft` on training set, to get `self.train`
+                a. run `ft` on training set, assign back to `self.train`
                 b. make sure `self.train` is a LabelList (y created)
                 c. store `self.train.y.__class__`
-                d. run `fv` on validation set, to get `self.valid`
-                e. make `self` from ItemLists to LabelLists
+                d. run `fv` on validation set, assign back to `self.valid`
+                e. turn `self` from ItemLists to LabelLists
                 f. process `self`
             6. return _inner
 
