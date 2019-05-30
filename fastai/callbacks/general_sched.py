@@ -1,3 +1,19 @@
+"""
+TrainingPhase and General scheduler
+
+class TrainingPhase
+
+    schedule_hp
+
+class GeneralScheduler
+    
+    Callback methods
+
+        on_batch_end
+        on_train_begin
+
+
+"""
 from ..core import *
 from ..callback import *
 from ..basic_train import Learner, LearnerCallback
