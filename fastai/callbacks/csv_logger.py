@@ -1,4 +1,19 @@
+"""
 "A `Callback` that saves tracked metrics into a persistent file."
+
+CSV Logger
+
+class CSVLogger
+
+        read_logged_file
+
+    Calback methods
+   
+        on_train_begin
+        on_epoch_end
+        on_train_end
+
+"""
 #Contribution from devforfu: https://nbviewer.jupyter.org/gist/devforfu/ea0b3fcfe194dad323c3762492b05cae
 from ..torch_core import *
 from ..basic_data import DataBunch

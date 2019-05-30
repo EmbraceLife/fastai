@@ -1,3 +1,43 @@
+"""
+Tracking Callbacks
+
+class TerminateOnNaNCallback
+
+    Callback methods
+
+        on_batch_end
+
+        on_epoch_end
+
+class EarlyStoppingCallback
+
+    Callback methods
+
+        on_train_begin
+        on_epoch_end
+
+class SaveModelCallback
+
+    Callback methods
+
+        on_epoch_end
+        on_train_end
+
+class ReduceLROnPlateauCallback
+    
+    Callback methods
+
+        on_train_begin
+        on_epoch_end
+
+class TrackerCallback
+    
+        get_monitor_value
+
+    Callback methods
+
+        on_train_begin
+"""
 # Contribution from @fredguth, https://github.com/fredguth/fastai_playground.
 
 from fastai.torch_core import *
