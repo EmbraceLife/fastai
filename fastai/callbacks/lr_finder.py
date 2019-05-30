@@ -1,4 +1,22 @@
+"""
 "Tools to help find the optimal learning rate for training"
+
+Learning Rate Finder
+
+Choosing a good learning rate
+
+        lr_find
+        Suggested LR
+
+class LRFinder
+
+    Callback methods
+    
+        on_train_begin
+        on_batch_end
+        on_epoch_end
+        on_train_end
+"""
 from ..torch_core import *
 from ..basic_data import DataBunch
 from ..callback import *

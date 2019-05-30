@@ -1,4 +1,23 @@
+"""
 "Supports 1-Cycle style training"
+
+The 1cycle policy
+
+What is 1cycle?
+
+Basic Training
+
+Training with the 1cycle policy
+
+class OneCycleScheduler
+
+        steps
+
+    Callback methods
+
+        on_train_begin
+        on_batch_end
+"""
 from ..core import *
 from ..callback import *
 from ..basic_train import Learner,LearnerCallback
