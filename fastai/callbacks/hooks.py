@@ -1,4 +1,45 @@
+"""
 "Hooks provide extensibility at the model level."
+
+Hook callbacks
+
+class ActivationStats
+
+    Internal implementation
+
+        hook
+
+    Callback methods
+
+        on_train_begin
+        on_batch_end
+        on_train_end
+
+class Hook
+
+        remove
+
+class Hooks
+
+        remove
+
+Convenience functions for hooks
+
+        hook_output
+        hook_outputs
+        model_sizes
+        model_summary
+        num_features_model
+        dummy_batch
+        dummy_eval
+
+class HookCallback
+
+    Callback methods
+
+        on_train_begin
+        on_train_end
+"""
 from ..torch_core import *
 from ..callback import *
 from ..basic_train import *

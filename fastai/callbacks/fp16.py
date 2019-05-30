@@ -1,4 +1,23 @@
+"""
 "Callback support for half precision (fp16) training. Increases training speed."
+
+Mixed precision training
+
+Overview
+        
+        to_fp16
+
+class MixedPrecision
+
+    Callback methods
+    
+        on_backward_begin
+        on_backward_end
+        on_loss_begin
+        on_step_end
+        on_train_begin
+
+"""
 from ..torch_core import *
 from ..callback import *
 from ..basic_train import *
