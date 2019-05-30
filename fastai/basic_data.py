@@ -1,4 +1,53 @@
+"""
 "`fastai.data` loads and manages datasets with `DataBunch`"
+
+Get your data ready for training
+
+class DataBunch
+
+    Factory method
+        create
+
+    Visualization
+        show_batch
+
+    Grabbing some data
+        dl
+        one_batch
+        one_item
+        sanity_check
+
+    Load and save
+        save
+        load_data
+
+    Empty DataBunch for inference
+        export
+        load_empty
+        add_test
+
+    Dataloader transforms
+        add_tfm
+
+Using a custom Dataset in fastai
+
+    Basics
+    For a specific application
+    Functions that really won't work
+
+class DeviceDataLoader
+
+    Factory method
+        create
+
+    Methods
+        add_tfm
+        remove_tfm
+        new
+        proc_batch
+
+`DatasetType`
+"""
 from .torch_core import *
 from torch.utils.data.dataloader import default_collate
 
