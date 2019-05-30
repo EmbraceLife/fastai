@@ -1,4 +1,16 @@
+"""
 "Regroups lr adjustment to seq_len, AR and TAR"
+
+Training tweaks for an RNN
+
+class RNNTrainer
+
+    Callback methods
+
+        on_epoch_begin
+        on_loss_begin
+        on_backward_begin
+"""
 from ..torch_core import *
 from ..callback import *
 from ..basic_train import Learner, LearnerCallback
