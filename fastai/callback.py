@@ -1,4 +1,75 @@
+"""
 "Callbacks provides extensibility to the `basic_train` loop. See `train` for examples of custom callbacks."
+
+Classes for callback implementors
+
+class Callback
+
+Methods your subclass can implement
+
+        on_train_begin
+        on_epoch_begin
+        on_batch_begin
+        on_loss_begin
+        on_backward_begin
+        on_backward_end
+        on_step_end
+        on_batch_end
+        on_epoch_end
+        on_train_end
+        get_state
+
+Annealing functions
+
+        annealing_cos
+        annealing_exp
+        annealing_linear
+        annealing_no
+        annealing_poly
+
+class CallbackHandler
+
+        on_backward_begin
+        on_backward_end
+        on_batch_begin
+        on_batch_end
+        on_epoch_begin
+        on_epoch_end
+        on_loss_begin
+        on_step_end
+        on_train_begin
+        on_train_end
+        set_dl
+
+class OptimWrapper
+
+        clear
+        create
+        new
+        read_defaults
+        read_val
+        set_val
+        step
+        zero_grad
+
+class SmoothenValue
+
+        add_value
+
+class Scheduler
+
+        step
+
+class AverageMetric
+
+    Callback methods
+
+        on_epoch_begin
+        on_batch_end
+        on_epoch_end
+
+
+"""
 from .basic_data import *
 from .torch_core import *
 import torch.distributed as dist
