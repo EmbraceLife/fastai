@@ -1,3 +1,20 @@
+"""
+Computer Vision Interpret
+
+class SegmentationInterpretation
+
+        top_losses
+        _interp_show
+        show_xyz
+        _generate_confusion
+        _plot_intersect_cm
+
+    train
+
+    interpret
+
+class ObjectDetectionInterpretation
+"""
 from ..torch_core import *
 from ..basic_data import *
 from ..basic_train import *
