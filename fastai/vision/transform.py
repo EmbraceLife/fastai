@@ -1,4 +1,39 @@
+"""
 "Image transformations for data augmentation. All transforms are done on the tensor level"
+
+Image transforms
+Data augmentation
+Data augmentation details
+        get_transforms
+        zoom_crop
+        rand_resize_crop
+Randomness
+List of transforms
+        brightness
+        contrast
+        crop
+        crop_pad
+        dihedral
+        dihedral_affine
+        flip_lr
+        flip_affine
+        jitter
+        pad
+        perspective_warp
+        resize
+        rotate
+        rgb_randomize
+        skew
+        squish
+        symmetric_warp
+        tilt
+        zoom
+        cutout
+Convenience functions
+        rand_crop
+        rand_pad
+        rand_zoom
+"""
 from ..torch_core import *
 from .image import *
 from .image import _affine_mult

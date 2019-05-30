@@ -1,3 +1,15 @@
+"""
+Image Cleaner Widget
+class DatasetFormatter
+        from_similars
+        from_toplosses
+class ImageCleaner
+class ImageDownloader
+        Downloading images in python scripts outside Jupyter notebooks
+        download_google_images
+        Downloading more than a hundred images
+Methods
+"""
 from ..torch_core import *
 from ..basic_train import *
 from ..basic_data import *

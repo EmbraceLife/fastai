@@ -1,4 +1,47 @@
+"""
 "Manages data input pipeline - folderstransformbatch input. Includes support for classification, segmentation and bounding boxes"
+
+Computer vision data
+Quickly get your data ready for training
+class ImageDataBunch
+    Factory methods
+        from_folder
+        from_csv
+        from_df
+        from_name_re
+        from_name_func
+        from_lists
+        create_from_ll
+        single_from_classes
+    Other methods
+        channel_view
+        batch_stats
+        normalize
+Data normalization
+        normalize
+        denormalize
+        normalize_funcs
+        get_annotations
+        bb_pad_collate
+ItemList specific to vision
+    class ImageList
+        from_folder
+        from_df
+        get_image_files
+        open
+        show_xys
+        show_xyzs
+    class ObjectCategoryList
+    class ObjectItemList
+    class SegmentationItemList
+    class SegmentationLabelList
+    class PointsLabelList
+    class PointsItemList
+    class ImageImageList
+Building your own dataset
+        download_images
+        verify_images
+"""
 from ..torch_core import *
 from .image import *
 from .transform import *

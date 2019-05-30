@@ -1,3 +1,43 @@
+"""
+GANs
+class GANLearner
+    Factory methods
+        from_learners
+        wgan
+Switchers
+    class FixedGANSwitcher
+        on_train_begin
+        on_batch_end
+    class AdaptiveGANSwitcher
+        on_batch_end
+Discriminative LR
+    class GANDiscriminativeLR
+        on_batch_begin
+        on_step_end
+Specific models
+        basic_critic
+        basic_generator
+        gan_critic
+class GANTrainer
+        switch
+        on_train_begin
+        on_epoch_begin
+        on_batch_begin
+        on_backward_begin
+        on_epoch_end
+        on_train_end
+Specific modules
+    class GANModule
+        switch
+    class GANLoss
+    class AdaptiveLoss
+        accuracy_thresh_expand
+Data Block API
+    class NoisyItem
+    class GANItemList
+        show_xys
+        show_xyzs
+"""
 from ..torch_core import *
 from ..layers import *
 from ..callback import *

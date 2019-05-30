@@ -1,3 +1,8 @@
+"""
+Dynamic U-Net
+class DynamicUnet
+class UnetBlock
+"""
 from ...torch_core import *
 from ...layers import *
 from ...callbacks.hooks import *

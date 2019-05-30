@@ -1,4 +1,58 @@
+"""
 "`Image` provides support to convert, transform and show images"
+
+The fastai Image classes
+The Image classes
+    class Image
+        open_image
+        Image.show
+    class ImageSegment
+        open_mask
+    Run length encoded masks
+        open_mask_rle
+        rle_decode
+        rle_encode
+    class ImagePoints
+    class ImageBBox
+        create
+        show_image
+        pil2tensor
+        image2np
+        scale_flow
+        bb2hw
+        tis2hw
+Visualization functions
+        show_all
+        plot_flat
+        plot_multi
+        show_multi
+Applying transforms
+        apply_tfms
+Fastai internal pipeline
+    What does a transform do?
+    Be smart and efficient
+    Final result
+    `ResizeMethod`
+Transform classes
+    class Transform
+    class RandTransform
+        resolve
+    class TfmAffine
+    class TfmCoord
+    class TfmLighting
+    class TfmPixel
+    class TfmCrop
+Internal funcitons of the Image classes
+        affine
+        clone
+        coord
+        lighting
+        pixel
+        refresh
+        resize
+        save
+    class FlowField
+"""
 from ..torch_core import *
 from ..basic_data import *
 from ..layers import MSELossFlat
