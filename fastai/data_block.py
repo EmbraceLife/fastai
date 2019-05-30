@@ -767,7 +767,7 @@ class ItemList():
         0. ItemLists.__getattr__('label_from_folder')
                 a. apply label_from_folder to both train and valid LabelList
                 b. turn ItemLists to LabelLists and do process 
-        1. label_from_folder
+        1. ItemList.label_from_folder
                 provide a lambda function to extract labels from filenames
         2. label_from_func
                 apply lambda func to every item/filename 
@@ -1035,7 +1035,8 @@ class ItemLists():
         """
         ----why
         ItemLists are simply more ItemList, so can simply borrow methods from
-        ItemList to use, using __getattr__ and ItemList methods
+        ItemList to use, instead creating new methods for ItemLists
+        ItemList. __getattr__ is the solution
 
         ----what
         `ItemLists.__getattr__`:
