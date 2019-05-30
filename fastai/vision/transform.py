@@ -350,7 +350,22 @@ rand_pos = {'row_pct':(0,1), 'col_pct':(0,1)}
 def rand_pad(padding:int, size:int, mode:str='reflection'):
     """
     "Fixed `mode` `padding` and random crop of `size`"
-    
+    ----why
+    Reality: we got training and valid sets with x and y, but no transformation
+    Dream: prepare transformations for x and y
+
+    ----logic flow
+    1. rand_pad
+            put padding and cropping transforms into a list
+    2. pad
+            to instantiate TfmPixel with `_pad` and `order=-10`
+    3. _pad 
+            do padding for either ImagePoints or else
+    4. crop
+            to instantiate TfmPixel with `_crop`
+    5. _crop
+            to do cropping for either ImagePoints or else
+
     ----what
     `rand_pad`
         1. create a padding transform with `pad`

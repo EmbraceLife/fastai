@@ -377,11 +377,15 @@ class ItemList():
                     include:Optional[Collection[str]]=None, processor:PreProcessors=None, presort:Optional[bool]=False, **kwargs)->'ItemList':
         """Create an `ItemList` in `path` from the filenames that have a suffix in `extensions`.
         `recurse` determines if we search subfolders.
+        
+        ----why
+        Reality: data files in a folder with many subfolders
+        Dream: all data files extracted and ready to use for many tasks
 
         ----what
         `ItemList.from_folder`:
-        1. extract a list of files from a folder with `get_files`
-        2. bring all input args and run `ItemList.__init__` to instantiate 
+        1. extract a list of files from a folder of folders 
+        2. use it to create an ItemList  
         
         ----inputs
         for `get_files`:
@@ -404,7 +408,16 @@ class ItemList():
 
     @classmethod
     def from_df(cls, df:DataFrame, path:PathOrStr='.', cols:IntsOrStrs=0, processor:PreProcessors=None, **kwargs)->'ItemList':
+        """
         "Create an `ItemList` in `path` from the inputs in the `cols` of `df`."
+        
+        ----why
+        Reality: all data is in a or more cols of a dataframe
+        Dream:   extract all the data together into a thing for many tasks
+
+        ----what 
+
+        """
         inputs = df.iloc[:,df_names_to_idx(cols, df)]
         assert inputs.isna().sum().sum() == 0, f"You have NaN values in column(s) {cols} of your dataframe, please fix it."
         res = cls(items=_maybe_squeeze(inputs.values), path=path, inner_df=df, processor=processor, **kwargs)
@@ -562,6 +575,21 @@ class ItemList():
     def split_by_folder(self, train:str='train', valid:str='valid')->'ItemLists':
         """
         "Split the data depending on the folder (`train` or `valid`) in which the filenames are."
+
+        ----why
+        Reality: all data are in the same list of `self.items`
+        Dream: data split into training set and validation set 
+                a large ItemList ------> an ItemLists with two ItemList
+                
+        ----what
+        1. split_by_folder
+                get indexes of files from subfolder of 'train' 
+                get indexes of files from subfolder of 'valid'
+        2. split_by_idxs
+                ItemList.__getitem__ turns indexes into a new ItemList
+        3. split_by_list
+                use the two new ItemList to make a large ItemLists
+
         ----what
         `ItemList.split_by_folder`:
             1. split a large ItemList into a training ItemList 
@@ -727,6 +755,28 @@ class ItemList():
     def label_from_folder(self, label_cls:Callable=None, **kwargs)->'LabelList':
         """
         "Give a label to each filename depending on its folder."
+
+        ----why
+        Reality: ItemLists with train and valid on x but no y
+        Dream: create y for train, valid in ItemLists
+
+        ----logic flow
+        where is y or labels?
+            y, labels are stored in subfolder names, therefore inside filenames
+
+        0. ItemLists.__getattr__('label_from_folder')
+                a. apply label_from_folder to both train and valid LabelList
+                b. turn ItemLists to LabelLists and do process 
+        1. label_from_folder
+                provide a lambda function to extract labels from filenames
+        2. label_from_func
+                apply lambda func to every item/filename 
+                and put labels into a list 
+        3. _label_from_list
+                0. extract label class from the list of subfolder names
+                1. instantiate the label class with the list of names
+                2. instantiate a LabelList with `self`/x and label/y
+
         ----what
         `ItemList.label_from_folder`:
             0. actually create a lambda function to extract subfolder names
@@ -983,6 +1033,10 @@ class ItemLists():
 
     def __getattr__(self, k):
         """
+        ----why
+        ItemLists are simply more ItemList, so can simply borrow methods from
+        ItemList to use, using __getattr__ and ItemList methods
+
         ----what
         `ItemLists.__getattr__`:
             1. apply `ItemList.k` to `self.train` and `self.valid`
@@ -1057,13 +1111,28 @@ class ItemLists():
     def transform(self, tfms:Optional[Tuple[TfmList,TfmList]]=(None,None), **kwargs):
         """
         "Set `tfms` to be applied to the xs of the train and validation set."
+       
+        ----why
+        Reality: 
+            Now we got a LabelLists and a list of transforms, 
+            but not yet assign the transforms to the x and y inside
+        Dream: 
+            assign transforms to x and y appropriately, but not transform yet
+
+        ----logic flow
+        1. LabelLists.transform
+               a. make sure tfms has two items in the list of tfms
+               b. pass first item to train second to valid set
+               c. second to test set
+        2. LabelList.transform
+                a. set transforms for x and y but not doing real transforming 
         
-        ----what 
+        ----procedures
         `LabelLists.transform`:
-            1. set all tfms for training set  to `self.train`
-            2. set all tfms for validation set to `self.valid`
-            3. if test set available, set all tfms for validation set 
-               to `self.test`
+            0. make sure tfms is list with 2 items for train and valid each
+            1. give first item of tfms to self.train 
+            2. give second item of tfms to self.valid
+            3. if test set available,give the second item to self.test too 
         """
         if not tfms: tfms=(None,None)
         assert is_listy(tfms) and len(tfms) == 2, "Please pass a list of two lists of transforms (train and valid)."
