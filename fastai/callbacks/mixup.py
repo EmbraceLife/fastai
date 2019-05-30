@@ -1,4 +1,27 @@
+"""
 "Implements [mixup](https://arxiv.org/abs/1710.09412) training method"
+
+Mixup data augmentation
+
+What is mixup?
+
+Basic Training
+
+Mixup implementation in the library
+
+Adding mixup to the mix
+
+class MixUpCallback
+    
+    Callback methods
+    
+        on_batch_begin
+
+Dealing with the loss
+
+    class MixUpLoss
+
+"""
 from ..torch_core import *
 from ..callback import *
 from ..basic_train import Learner, LearnerCallback
