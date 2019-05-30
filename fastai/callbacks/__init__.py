@@ -1,3 +1,30 @@
+"""
+List of callbacks
+
+Callback
+
+    LRFinder
+    OneCycleScheduler
+    MixUpCallback
+    CSVLogger
+    GeneralScheduler
+    MixedPrecision
+    HookCallback
+    RNNTrainer
+    TerminateOnNaNCallback
+    EarlyStoppingCallback
+    SaveModelCallback
+    ReduceLROnPlateauCallback
+    PeakMemMetric
+    StopAfterNBatches
+
+train and basic_train
+
+    Recorder
+    ShowGraph
+    BnFreeze
+    GradientClipping
+"""
 from .lr_finder import *
 from .one_cycle import *
 from .fp16 import *
