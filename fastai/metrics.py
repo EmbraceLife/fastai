@@ -1,4 +1,38 @@
+"""
 "Implements various metrics to measure training accuracy"
+
+Training metrics
+
+Predefined metrics:
+
+        accuracy
+        accuracy_thresh
+        top_k_accuracy
+        dice
+        error_rate
+        mean_squared_error
+        mean_absolute_error
+        mean_squared_logarithmic_error
+        exp_rmspe
+        root_mean_squared_error
+        fbeta
+        explained_variance
+        r2_score
+
+    class RMSE
+    class ExpRMSPE
+    class Precision
+    class Recall
+    class FBeta
+    class R2Score
+    class ExplainedVariance
+    class MatthewsCorreff
+    class KappaScore
+    class ConfusionMatrix
+    class MultiLabelFbeta
+
+Creating your own metric
+"""
 from .torch_core import *
 from .callback import *
 from .layers import *
