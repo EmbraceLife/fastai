@@ -1,4 +1,29 @@
+"""
 "`Learner` support for computer vision"
+
+Computer Vision Learner
+
+Transfer learning
+
+        cnn_learner
+        unet_learner
+    
+    Get predictions
+        
+        predict
+    
+    Customize your model
+        
+        create_body
+        create_head
+
+    class ClassificationInterpretation
+        
+        from_learner
+        interpret
+        plot_top_losses
+        plot_multi_top_losses
+"""
 from ..torch_core import *
 from ..basic_train import *
 from ..basic_data import *

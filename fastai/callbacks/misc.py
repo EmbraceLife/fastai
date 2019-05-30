@@ -1,5 +1,10 @@
+"""
 " Miscellaneous callbacks "
 
+callbacks.misc
+
+class StopAfterNBatches
+"""
 from fastai.callback import Callback
 
 class StopAfterNBatches(Callback):
