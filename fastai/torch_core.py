@@ -1,4 +1,77 @@
+"""
 "Utility functions to help deal with tensors"
+
+Torch Core
+
+Global constants
+
+Functions that operate conversions
+
+        batch_to_half
+        flatten_model
+        model2half
+        np2model_tensor
+        requires_grad
+        tensor
+        to_cpu
+        to_data
+        to_detach
+        to_device
+        to_half
+        to_np
+        try_int
+
+Functions to deal with model initialization
+
+        apply_init
+        apply_leaf
+        cond_init
+        in_channels
+        init_default
+
+Functions to get information of a model
+
+        children
+        children_and_parameters
+        first_layer
+        last_layer
+        num_children
+        one_param
+        range_children
+        trainable_params
+
+Functions to deal with BatchNorm layers
+
+        bn2float
+        set_bn_eval
+        split_no_wd_params
+
+Functions to get random tensors
+
+        log_uniform
+        rand_bool
+        uniform
+        uniform_int
+
+Other functions
+
+    class ModelOnCPU
+
+    class NoneReduceOnCPU
+
+    class ParameterModule
+
+        data_collate
+        get_model
+        grab_idx
+        logit
+        logit_
+        model_type
+        np_address
+        split_model
+        split_model_idx
+        trange_of
+"""
 from .imports.torch import *
 from .core import *
 from collections import OrderedDict

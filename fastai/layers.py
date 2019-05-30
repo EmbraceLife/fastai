@@ -1,4 +1,56 @@
+"""
 "`fastai.layers` provides essential functions to building and modifying `model` architectures"
+
+Model Layers
+
+Custom fastai modules
+    class AdaptiveConcatPool2d
+    class Lambda
+
+class Flatten
+        PoolFlatten
+
+class ResizeBatch
+    class Debugger
+    class PixelShuffle_ICNR
+    class MergeLayer
+    class PartialLayer
+    class SigmoidRange
+    class SequentialEx
+    class SelfAttention
+    class BatchNorm1dFlat
+
+Loss functions
+
+    class FlattenedLoss
+        BCEFlat
+        BCEWithLogitsFlat
+        CrossEntropyFlat
+        MSELossFlat
+
+class NoopLoss
+
+class WassersteinLoss
+
+Helper functions to create modules
+        bn_drop_lin
+        conv2d
+        conv2d_trans
+        conv_layer
+        embedding
+        relu
+        res_block
+        sigmoid_range
+        simple_cnn
+
+Initialization of modules
+        batchnorm_2d
+        icnr
+        trunc_normal_
+        icnr
+
+`NormType`
+"""
 from .torch_core import *
 
 __all__ = ['AdaptiveConcatPool2d', 'BCEWithLogitsFlat', 'BCEFlat', 'MSELossFlat', 'CrossEntropyFlat', 'Debugger',

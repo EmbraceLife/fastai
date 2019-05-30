@@ -1,4 +1,77 @@
+"""
 "`fastai.core` contains essential util functions to format and split data"
+
+Basic core
+
+Global constants
+
+Check functions
+
+        has_arg
+        ifnone
+        is1d
+        is_listy
+        is_tuple
+
+Collection related functions
+
+        arange_of
+        array
+        arrays_split
+        chunks
+        df_names_to_idx
+        extract_kwargs
+        idx_dict
+        index_row
+        listify
+        random_split
+        range_of
+        series2cat
+        split_kwargs_by_func
+        to_int
+        uniqueify
+
+Files management and downloads
+
+        download_url
+        find_classes
+        join_path
+        join_paths
+        loadtxt_str
+        save_texts
+
+Multiprocessing
+
+        num_cpus
+        parallel
+        partition
+        partition_by_cores
+
+Data block API
+
+    class ItemBase
+        apply_tfms
+        show
+
+    class Category
+
+    class EmptyLabel
+
+    class MultiCategory
+
+class FloatItem
+
+Others
+        camel2snake
+        even_mults
+        func_args
+        noop
+        one_hot
+        show_some
+        subplots
+        text2html_table
+"""
+
 from .imports.core import *
 
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")

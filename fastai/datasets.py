@@ -1,3 +1,21 @@
+"""
+This module has the necessary functions to be able to download several useful datasets that we might be interested in using in our models.
+
+datasets
+
+class URLs
+
+Downloading Data
+        untar_data
+        download_data
+        datapath4file
+        url2path
+
+class Config
+        get_path
+        data_path
+        model_path
+"""
 from .core import *
 import hashlib
 
