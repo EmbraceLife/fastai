@@ -100,9 +100,8 @@ Inner classes
 Helper functions
         get_files
 """
-
-        from .torch_core import *
-        from .basic_data import *
+from .torch_core import *
+from .basic_data import *
 from .layers import *
 from numbers import Integral
 
