@@ -1,4 +1,48 @@
+"""
 "Provides advanced training extensions to `fastai.basic_train`. Includes half-precision, learning rate finder, mixup, and one-cycle"
+
+Additional training functions
+
+Learner extension methods
+
+        fit_one_cycle
+        one_cycle_scheduler
+        lr_find
+        to_fp16
+        to_fp32
+        mixup
+
+class Interpretation
+
+        from_learner
+        top_losses
+
+class ClassificationInterpretation
+
+        top_losses
+        plot_confusion_matrix
+        confusion_matrix
+        most_confused
+
+class MultiLabelClassificationInterpretation
+
+        Working with large datasets
+
+Additional callbacks
+
+    class ShowGraph
+        on_epoch_end
+
+class GradientClipping
+
+        on_backward_end
+
+class BnFreeze
+
+        on_epoch_begin
+
+class AccumulateScheduler
+"""
 from .torch_core import *
 from .callbacks import *
 from .basic_data import *
