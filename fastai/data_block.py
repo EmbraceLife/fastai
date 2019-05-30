@@ -1162,6 +1162,7 @@ class LabelLists(ItemLists):
 
         ----what
         `LabelLists.get_processors`: 
+            0. processors are defined as class properties of x and y
             1. instantiate `x` and `y`'s processors for training set
             2. return all the x Processors objects under `xp`, 
             3. return all the y Processors objects under `yp`
@@ -1186,7 +1187,45 @@ class LabelLists(ItemLists):
     def process(self):
         """
         "Process the inner datasets."
-        
+        ----why
+        Got:
+            LabelList train and valid are in LabelLists now, but 
+            we still need to consider preprocssing to x, y
+        Want: 
+            get processing done for train, valid and test
+
+        ----logic flow
+        LabelLists.process
+            a. get processors classes for x and y
+            b. apply them to train, valid and test
+            c. warning messages
+        `LabelLists.get_processors`: does a 
+            0. processors are defined as class properties of x and y
+            1. instantiate `x` and `y`'s processors for training set
+            2. return all the x Processors objects under `xp`, 
+            3. return all the y Processors objects under `yp`
+        LabelList.process does b
+            1. use a list of xProcessors to process x 
+            2. if `self.y.filter_missing_y` is true, 
+                then filter out both x and y on the missing data 
+            3. use a list of yProcessors to process y 
+            4. return self
+        `ItemList.process`:
+            1. assign `processor` to `self.processor`
+            2. make `self.processor` a list
+            3. apply all processors to `self`
+            4. return `self`
+        `CategoryProcessor.process`:
+            0. actually doing processing work on the data
+            1. create classes and c2i
+            2. run the super class `PreProcessor.process(ds)`
+        `PreProcessor.process`:
+            0. apply process_one to every item in ds.items
+            1. put all the processing output into an array
+            2. assign the array back to `ds.items`
+        `CategoryProcessor.process_one`:
+            1. use each item to access the index from dict `c2i`
+
         ----what
         `LabelLists.process`:
             1. get processors for both x and y
