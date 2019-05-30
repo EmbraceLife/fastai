@@ -1254,7 +1254,26 @@ class LabelLists(ItemLists):
                   no_check:bool=False, **kwargs)->'DataBunch':
         """
         "Create an `DataBunch` from self, `path` will override `self.path`, `kwargs` are passed to `DataBunch.create`."
+       
+        ----why
+        Got: a LabelLists with 2 LabelList, including ImageList, CategoryList
+        Want: turn a list of data into a dataloader for doing batches
+
+        ----logic flow
+        `LabelLists.databunch`
+            1. take path, create `DataBunch` under `data`, 
+                normalize it and put `LabelLists` under `data`
+        `DataBunch.create`
+            1. create an instance of DataBunch from a list of dataloaders
+                which are made from a list of datasets/LabelList
+        `ImageDataBunch.normalize`
+            1. create normalize and denormalize functions for data (x, even y)
+                with mean and std 
+            2. these mean and std are from pretrained dataset or its own data
+            3. add normalize func as tfms to DeviceDataLoader
+            4. so `normalize` only apply to data when DeviceDataLoader do batch
         
+        ------------------------
         ----what 
         `LabelLists.databunch`
             1. take path, create `DataBunch` under `data`, 
