@@ -1,4 +1,10 @@
+"""
 " Utils for modifying what is displayed in notebooks and command line"
+
+Modify Display Utils
+
+class progress_disabled_ctx
+"""
 import fastai
 import fastprogress
 

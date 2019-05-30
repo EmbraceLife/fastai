@@ -1,4 +1,95 @@
+"""
 "Provides basic training and validation with `Learner`"
+
+Basic training functionality
+
+class Learner
+
+    Model fitting methods
+        lr_find
+        fit
+        fit_one_cycle
+
+    See results
+        predict
+        get_preds
+        validate
+        show_results
+        pred_batch
+        interpret
+
+    Model summary
+        model_summary
+
+    Test time augmentation
+        TTA
+
+    Gradient clipping
+        clip_grad
+
+    Mixed precision training
+        to_fp16
+        to_fp32
+
+    Distributed training
+        to_distributed
+        to_parallel
+
+    Discriminative layer training
+        lr_range
+        unfreeze
+        freeze
+        freeze_to
+        split
+
+    Saving and loading models
+        save
+        load
+
+    Deploying your model
+        export
+        load_learner
+
+    Freeing memory
+        purge
+        destroy
+
+    Other methods
+        init
+        mixup
+        backward
+        create_opt
+        dl
+
+class Recorder
+
+    Plotting methods
+        plot
+        plot_losses
+        plot_lr
+        plot_metrics
+
+    Callback methods
+        on_backward_begin
+        on_batch_begin
+        on_epoch_end
+        on_train_begin
+
+    Inner functions
+        add_metric_names
+        format_stats
+
+Module functions
+        fit
+        train_epoch
+        validate
+        get_preds
+        loss_batch
+
+Other classes
+    class LearnerCallback
+    class RecordOnCPU
+"""
 from .torch_core import *
 from .basic_data import *
 from .callback import *

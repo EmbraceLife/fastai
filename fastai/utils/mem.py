@@ -1,5 +1,25 @@
+"""
 "Utility functions for memory management"
 
+Memory management utils
+
+        gpu_mem_get
+        gpu_mem_get_all
+        gpu_mem_get_free
+        gpu_mem_get_free_no_cache
+        gpu_mem_get_used
+        gpu_mem_get_used_no_cache
+        gpu_mem_get_used_fast
+        gpu_with_max_free_mem
+        preload_pytorch
+        class GPUMemory
+        b2mb
+
+Memory Tracing Utils
+
+        class GPUMemTrace
+        gpu_mem_trace
+"""
 from ..imports.torch import *
 from ..core import *
 from ..script import *

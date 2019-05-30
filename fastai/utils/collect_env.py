@@ -1,4 +1,23 @@
+"""
+show_install: 
+    Print user's setup information
+
+    without nvidia-smi printout:
+
+    python -m fastai.utils.show_install
+
+    with nvidia-smi printout:
+
+    python -m fastai.utils.show_install 1
+
+check_perf:
+
+    Suggest how to improve the setup to speed things up
+
+    python -m fastai.utils.check_perf
+
 "Utility functions to help deal with user environment"
+"""
 
 from ..imports.torch import *
 from ..core import *

@@ -1,5 +1,13 @@
+"""
 "ipython utils"
 
+IPython Utilities
+
+Workarounds to the leaky ipython traceback on exception
+
+        gpu_mem_restore
+        class gpu_mem_restore_ctx
+"""
 import os, functools, traceback, gc
 
 def is_in_ipython():
