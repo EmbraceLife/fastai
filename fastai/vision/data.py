@@ -414,6 +414,19 @@ class ImageList(ItemList):
     @classmethod
     def from_folder(cls, path:PathOrStr='.', extensions:Collection[str]=None, **kwargs)->ItemList:
         """Get the list of files in `path` that have an image suffix. `recurse` determines if we search subfolders.
+
+
+        ----why
+        Reality: data files in a folder with many subfolders
+        Dream: all data files extracted and ready to use for many tasks
+
+        ----logic flow
+        `ImageList.from_folder` 
+            1. use user defined `extensions` or `image_extensions`
+        `ItemList.from_folder`:
+            1. extract a list of files from a folder of folders 
+            2. use it to create an ItemList  
+
         ----what
         `ImageList.from_folder` = extract a list of image files from a folder.
        
