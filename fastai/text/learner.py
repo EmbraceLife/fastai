@@ -15,7 +15,7 @@ from .data import *
 __all__ = ['RNNLearner', 'LanguageLearner', 'convert_weights', 'decode_spec_tokens', 'get_language_model', 'language_model_learner', 
            'MultiBatchEncoder', 'get_text_classifier', 'text_classifier_learner', 'PoolingLinearClassifier']
 
-_model_meta = {AWD_LSTM: {'hid_name':'emb_sz', 'url':URLs.WT103_1, #'url_bwd':URLs.WT103_BWD,
+_model_meta = {AWD_LSTM: {'hid_name':'emb_sz', 'url':URLs.WT103_FWD, 'url_bwd':URLs.WT103_BWD,
                           'config_lm':awd_lstm_lm_config, 'split_lm': awd_lstm_lm_split,
                           'config_clas':awd_lstm_clas_config, 'split_clas': awd_lstm_clas_split},
                Transformer: {'hid_name':'d_model', 'url':URLs.OPENAI_TRANSFORMER,
@@ -188,7 +188,7 @@ class LanguageLearner(RNNLearner):
 def get_language_model(arch:Callable, vocab_sz:int, config:dict=None, drop_mult:float=1.):
     "Create a language model from `arch` and its `config`, maybe `pretrained`."
     meta = _model_meta[arch]
-    config = ifnone(config, meta['config_lm'].copy())
+    config = ifnone(config, meta['config_lm']).copy()
     for k in config.keys():
         if k.endswith('_p'): config[k] *= drop_mult
     tie_weights,output_p,out_bias = map(config.pop, ['tie_weights', 'output_p', 'out_bias'])
@@ -272,7 +272,7 @@ def get_text_classifier(arch:Callable, vocab_sz:int, n_class:int, bptt:int=70, m
                         pad_idx:int=1) -> nn.Module:
     "Create a text classifier from `arch` and its `config`, maybe `pretrained`."
     meta = _model_meta[arch]
-    config = ifnone(config, meta['config_clas'].copy())
+    config = ifnone(config, meta['config_clas']).copy()
     for k in config.keys(): 
         if k.endswith('_p'): config[k] *= drop_mult
     if lin_ftrs is None: lin_ftrs = [50]

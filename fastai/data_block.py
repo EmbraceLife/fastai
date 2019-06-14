@@ -273,9 +273,15 @@ class ItemList():
         self._label_list,self._split = LabelList,ItemLists
         # set property `copy_new` for creating new `Itemlist`
         self.copy_new = ['x', 'label_cls', 'path']
+<<<<<<< HEAD
         # calling internal function `__post__init()`
         self.__post_init__()
+||||||| merged common ancestors
+        self.__post_init__()
+=======
+>>>>>>> master
 
+<<<<<<< HEAD
     def __post_init__(self): pass
     def __len__(self)->int: 
         """
@@ -285,6 +291,12 @@ class ItemList():
         """
         return len(self.items) or 1
 
+||||||| merged common ancestors
+    def __post_init__(self): pass
+    def __len__(self)->int: return len(self.items) or 1
+=======
+    def __len__(self)->int: return len(self.items) or 1
+>>>>>>> master
     def get(self, i)->Any:
         """
         "Subclass if you want to customize how to create item `i` from `self.items`."
